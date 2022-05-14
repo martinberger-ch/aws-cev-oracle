@@ -16,7 +16,7 @@ Create the CEV required endpoints and set the subnet / security group for:
 - S3
 - SSM Service
 - EC2 
-- etc
+- etc.
 
 ## custom-oracle-iam.json
 Create the CEV required IAM role to use the CEV service. From the AWS documentation-

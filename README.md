@@ -1,5 +1,5 @@
 # aws-cev-oracle
-cloud Formation Templates for AWS Custom Engine Version for Oracle.
+AWS Cloud Formation Templates for AWS Custom Engine Version for Oracle.
 
 ## codebuild-vpc-infra.yaml
 Create the VPC infrastructure:

@@ -1,0 +1,4144 @@
+<!DOCTYPE html><html lang="en"><head>
+<title> db01_output - Oracle Database Security Assessment </title></head>
+<style>
+td.sev0 {
+    background-color:#00ff00;
+    border-collapse:collapse;
+    border:1px solid #8DA6B1;
+    margin:20px;
+}
+td.sev1 {
+    background-color:#cccccc;
+    border-collapse:collapse;
+    border:1px solid #8DA6B1;
+    margin:20px;
+}
+td.sev2 {
+    background-color:#00bfff;
+    border-collapse:collapse;
+    border:1px solid #8DA6B1;
+    margin:20px;
+}
+td.sev3 {
+    background-color:#ffff00;
+    border-collapse:collapse;
+    border:1px solid #8DA6B1;
+    margin:20px;
+}
+td.sev4 {
+    background-color:#ffa500;
+    border-collapse:collapse;
+    border:1px solid #8DA6B1;
+    margin:20px;
+}
+td.sev5 {
+    background-color:#f80000;
+    border-collapse:collapse;
+    border:1px solid #8DA6B1;
+    margin:20px;
+}
+</style>
+
+<style>
+
+table {
+    font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
+    font-size:14px;
+    border-collapse:collapse;
+    border:1px solid #8DA6B1;
+    margin:20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+thead {
+    background-color: #eeeeee;
+    font-weight:normal;
+    color:black;
+    border-bottom:3px double grey;
+    padding:12px 17px
+}
+
+tfoot {
+    background-color: #eeeeee;
+}
+
+h1 {
+    font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
+    text-align: center;
+}
+h2 {
+    font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
+    text-decoration: underline;
+}
+h3 {
+    font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
+}
+p {
+    font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
+}
+
+pre {
+    margin: 0;
+}
+
+p.footnote {
+    font-size: 12px
+}
+
+table.finding {
+    font-family:Lucida Sans Unicode, Lucida Grande, Sans-Serif;
+    font-size:14px;
+    border-collapse:collapse;
+    border:1px solid #8DA6B1;
+    margin:20px;
+    width:800px;
+}
+
+tr.ruleid {
+    font-size:10px;
+    background-color: #eeeeee;
+    border-collapse:collapse;
+    border:1px solid #8DA6B1;
+    margin:20px;
+    text-align:left;
+    font-weight:bold;
+}
+
+td.number {
+    text-align: right;
+}
+td.total {
+    text-align: right;
+    font-weight: bold;
+}
+td.finding_head {
+    text-align: left;
+    vertical-align: top;
+    font-weight: bold;
+    width: 100px; 
+}
+td.finding_cell {
+    text-align: left;
+    vertical-align: top;
+}
+td.childrow {
+    padding-left: 20px;
+}
+a.home {
+    width: 30px;
+    height: 22px;
+    line-height:20px;
+    position: fixed;
+    text-indent: 7px;
+    z-index: 999;
+    right: 50px;
+    bottom: 25px;
+    background: #dddddd no-repeat center 43%;
+    font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
+    font-size:10px;
+    color: black;
+    cursor:pointer;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+a.up {
+    width: 30px;
+    height: 22px;
+    position: fixed;
+    text-indent: 7px;
+    z-index: 999;
+    right: 80px;
+    bottom: 25px;
+    background: #dddddd no-repeat center 43%;
+    font-weight:bold;
+    font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
+    font-size:16px;
+    color: black;
+    cursor:pointer;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+a.down {
+    width: 30px;
+    height: 22px;
+    position: fixed;
+    text-indent: 7px;
+    z-index: 999;
+    right: 20px;
+    bottom: 25px;
+    background: #dddddd no-repeat center 43%;
+    font-weight:bold;
+    font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
+    font-size:16px;
+    color: black;
+    cursor:pointer;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.reftag {
+    background-color: #374A58;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 1px 0;
+    margin: 1px;
+    float: right;
+    width: 50px;
+    height: 15px;
+}
+</style>
+<script>
+var sectionStart = [0];
+
+// find offset
+function findPos(obj) {
+    var curtop = 0;
+
+    do {
+        curtop += obj.offsetTop;
+    } while (obj = obj.offsetParent);
+    return curtop;
+}
+
+// navigate the array
+function go(p_action) {
+    var epsilon = 20; // considered at section start if within a few pixels
+    var curpos = window.pageYOffset;
+
+    if (p_action == "up") {
+        for (var i = sectionStart.length-1; i >= 0; i--) {
+            if (sectionStart[i] < curpos-epsilon) {
+                window.scroll(0, sectionStart[i]);
+                break;
+            }
+        }
+    } else if (p_action == "down") {
+        for (var i = 0; i < sectionStart.length; i++) {
+            if (sectionStart[i] > curpos+epsilon) {
+                window.scroll(0, sectionStart[i]);
+                break;
+            }
+        }
+    } else if (p_action == "top") {
+        window.scroll(0, 0);
+    }
+}
+
+var beforePrint = function() {
+    document.getElementById("up").style.visibility = "hidden";
+    document.getElementById("down").style.visibility = "hidden";
+    document.getElementById("home").style.visibility = "hidden";
+};
+var afterPrint = function() {
+    document.getElementById("up").style.visibility = "";
+    document.getElementById("down").style.visibility = "";
+    document.getElementById("home").style.visibility = "";
+};
+
+function init() {
+    // populate array with H2 elements
+    var elements = document.getElementsByTagName("h2");
+    for (var i = 0; i < elements.length; i++) {
+        sectionStart.push(findPos(elements[i]));
+    }
+
+    // prevent navigation buttons from printing
+    if (window.matchMedia) {
+        var mediaQueryList = window.matchMedia('print');
+        mediaQueryList.addListener(function(mql) {
+            if (mql.matches) {
+                beforePrint();
+            } else {
+                afterPrint();
+            }
+        });
+    }
+    window.onbeforeprint = beforePrint;
+    window.onafterprint = afterPrint;
+}
+</script>
+
+<body onload="init();">
+<a id="up" class="up" onclick="go('up');">&#8679;</a>
+<a id="home" class="home" onclick="go('top');">Top</a>
+<a id="down" class="down" onclick="go('down');">&#8681;</a>
+<h1>Oracle Database Security Assessment</h1>
+<h3><center>Highly Confidential</center></h3>
+<h3> Assessment Date & Time </h3>
+<table cellpadding="4" border="1" rules="cols" summary="Data table for Assessment Date & Time">
+<thead><tr>
+<th align="center" scope="col"> Date of Data Collection </th>
+<th align="center" scope="col"> Date of Report </th>
+<th align="center" scope="col"> Reporter Version </th>
+</tr>
+</thead>
+<tr>
+<td align="left"> Mon May 16 2022 20:38:47 UTC+00:00 </td>
+<td align="left"> Mon May 16 2022 20:41:54 UTC+00:00 </td>
+<td align="left"> 2.2.2 (June 2021) - 6003 </td>
+</tr>
+</table>
+<h3> Database Identity </h3>
+<table cellpadding="4" border="1" rules="cols" summary="Data table for Database Identity">
+<thead><tr>
+<th align="center" scope="col"> Name </th>
+<th align="center" scope="col"> Platform </th>
+<th align="center" scope="col"> Database Role </th>
+<th align="center" scope="col"> Log Mode </th>
+<th align="center" scope="col"> Created </th>
+</tr>
+</thead>
+<tr>
+<td align="left"> DB01 </td>
+<td align="left"> Linux x86 64-bit </td>
+<td align="left"> PRIMARY </td>
+<td align="left"> ARCHIVELOG </td>
+<td align="left"> Sat May 14 2022 20:59:19 UTC+00:00 </td>
+</tr>
+</table>
+<h2>Summary</h2>
+<table border="1" cellpadding="4" rules="cols" summary="Summary of report sections" width="800px" table-layout="fixed">
+<thead><tr>
+<th align="left" scope="col" style="width:30%;vertical-align:top;"> Section </th>
+<th align="center" scope="col" style="width:10%;vertical-align:top;">Pass</th>
+<th align="center" scope="col" style="width:10%;vertical-align:top;">Evaluate</th>
+<th align="center" scope="col" style="width:10%;vertical-align:top;">Advisory</th>
+<th align="center" scope="col" style="width:10%;vertical-align:top;">Low<br>Risk</th>
+<th align="center" scope="col" style="width:10%;vertical-align:top;">Medium<br>Risk</th>
+<th align="center" scope="col" style="width:10%;vertical-align:top;">High<br>Risk</th>
+<th align="center" scope="col" style="width:11%;vertical-align:top;"> Total<br>Findings </th>
+</tr></thead>
+<tr>
+<td align="left"><a href="#Basic_Information"> Basic Information </a></td>
+<td class="number"> 1 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="total"> 1 </td>
+</tr>
+<tr>
+<td align="left"><a href="#User_Accounts"> User Accounts </a></td>
+<td class="number"> 6 </td>
+<td class="number"> 1 </td>
+<td class="number"> 1 </td>
+<td class="number"> 3 </td>
+<td class="number"> 2 </td>
+<td class="number"> 0 </td>
+<td class="total"> 13 </td>
+</tr>
+<tr>
+<td align="left"><a href="#Privileges_and_Roles"> Privileges and Roles </a></td>
+<td class="number"> 4 </td>
+<td class="number"> 16 </td>
+<td class="number"> 1 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="total"> 21 </td>
+</tr>
+<tr>
+<td align="left"><a href="#Authorization_Control"> Authorization Control </a></td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 2 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="total"> 2 </td>
+</tr>
+<tr>
+<td align="left"><a href="#Fine-Grained_Access_Control"> Fine-Grained Access Control </a></td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 5 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="total"> 5 </td>
+</tr>
+<tr>
+<td align="left"><a href="#Auditing"> Auditing </a></td>
+<td class="number"> 0 </td>
+<td class="number"> 7 </td>
+<td class="number"> 6 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="total"> 13 </td>
+</tr>
+<tr>
+<td align="left"><a href="#Encryption"> Encryption </a></td>
+<td class="number"> 0 </td>
+<td class="number"> 2 </td>
+<td class="number"> 1 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="total"> 3 </td>
+</tr>
+<tr>
+<td align="left"><a href="#Database_Configuration"> Database Configuration </a></td>
+<td class="number"> 8 </td>
+<td class="number"> 4 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 1 </td>
+<td class="number"> 0 </td>
+<td class="total"> 13 </td>
+</tr>
+<tr>
+<td align="left"><a href="#Network_Configuration"> Network Configuration </a></td>
+<td class="number"> 1 </td>
+<td class="number"> 1 </td>
+<td class="number"> 3 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="total"> 5 </td>
+</tr>
+<tr>
+<td align="left"><a href="#Operating_System"> Operating System </a></td>
+<td class="number"> 3 </td>
+<td class="number"> 1 </td>
+<td class="number"> 0 </td>
+<td class="number"> 0 </td>
+<td class="number"> 1 </td>
+<td class="number"> 0 </td>
+<td class="total"> 5 </td>
+</tr>
+<tfoot><tr>
+<th align="left" scope="row">Total</th>
+<td class="total"> 23 </td>
+<td class="total"> 32 </td>
+<td class="total"> 19 </td>
+<td class="total"> 3 </td>
+<td class="total"> 4 </td>
+<td class="total"> 0 </td>
+<td class="total"> 81 </td>
+</tr></tfoot>
+</table>
+<h2><a name="Basic_Information">Basic Information</a></h2>
+<h3> Database Version </h3>
+<table cellpadding="4" border="1" rules="cols">
+<tr>
+<td align="left"> Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production </td>
+</tr>
+<tr>
+<td align="left"> Security options used: (none) </td>
+</tr>
+</table>
+<h3> Security Features Utilized </h3>
+<table cellpadding="4" border="1" rules="cols" summary="Data table for Security Features Utilized">
+<thead><tr>
+<th align="left" scope="col"> Feature </th>
+<th align="center" scope="col"> Currently Used </th>
+</tr>
+</thead>
+<tr>
+<td align="left"> USER AUTHENTICATION </td>
+<td align="center">  </td>
+</tr>
+<tr>
+<td class="childrow"> Password Authentication </td>
+<td align="center"> Yes </td>
+</tr>
+<tr>
+<td class="childrow"> Global Authentication </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td class="childrow"> External Authentication </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td align="left">  </td>
+<td align="center">  </td>
+</tr>
+<tr>
+<td align="left"> AUTHORIZATION CONTROL </td>
+<td align="center">  </td>
+</tr>
+<tr>
+<td class="childrow"> Database Vault </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td class="childrow"> Privilege Analysis </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td align="left">  </td>
+<td align="center">  </td>
+</tr>
+<tr>
+<td align="left"> ENCRYPTION </td>
+<td align="center">  </td>
+</tr>
+<tr>
+<td class="childrow"> Tablespace Encryption </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td class="childrow"> Column Encryption </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td class="childrow"> Network Encryption </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td align="left">  </td>
+<td align="center">  </td>
+</tr>
+<tr>
+<td align="left"> AUDITING </td>
+<td align="center">  </td>
+</tr>
+<tr>
+<td class="childrow"> Unified Audit </td>
+<td align="center"> Yes </td>
+</tr>
+<tr>
+<td class="childrow"> Fine Grained Audit </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td class="childrow"> Traditional Audit </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td align="left">  </td>
+<td align="center">  </td>
+</tr>
+<tr>
+<td align="left"> FINE-GRAINED ACCESS CONTROL </td>
+<td align="center">  </td>
+</tr>
+<tr>
+<td class="childrow"> Virtual Private Database </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td class="childrow"> Real Application Security </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td class="childrow"> Label Security </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td class="childrow"> Data Redaction </td>
+<td align="center"> No </td>
+</tr>
+<tr>
+<td class="childrow"> Transparent Sensitive Data Protection </td>
+<td align="center"> No </td>
+</tr>
+</table>
+<h3> Patch Check </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> INFO.PATCH </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Latest comprehensive patch has been applied. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Latest comprehensive patch: Apr 04 2022 (42 days ago)
+
+Binary Patch Inventory:
+Patch ID (Comprehensive): 24713297 (created April 2022)
+
+SQL Patch History:
+Action time: Sat May 14 2022 18:57:18
+Action: APPLY
+Version: 19.1.0.0.0
+Description: OJVM RELEASE UPDATE: 19.15.0.0.220419 (33808367)
+
+Action time: Sat May 14 2022 18:57:18
+Action: APPLY
+Version: 19.15.0.0.0
+Description: Database Release Update : 19.15.0.0.220419 (33806152)
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> It is vital to keep the database software up-to-date with security fixes as they are released. Oracle issues comprehensive patches in the form of Release Updates, Patch Set Updates and Bundle Patches on a regular quarterly schedule. These updates should be applied as soon as they are available. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 1.1<br>Oracle Database 12c STIG  v1 r10: Rule SV-76029r2 </td><td></td></tr>
+</table>
+<h2><a name="User_Accounts">User Accounts</a></h2>
+<p>
+Note: Predefined Oracle accounts which are schema-only or locked are not included in this report. To include all user accounts, run the report with the -a option.
+<h3> User Accounts </h3>
+<table cellpadding="4" border="1" rules="cols" summary="Data table for User Accounts">
+<thead><tr>
+<th align="left" scope="col"> User Name </th>
+<th align="left" scope="col"> Status </th>
+<th align="left" scope="col"> Profile </th>
+<th align="left" scope="col"> Tablespace </th>
+<th align="center" scope="col"> Oracle Defined </th>
+<th align="left" scope="col"> Auth Type </th>
+</tr>
+</thead>
+<tr>
+<td align="left"> ADMIN </td>
+<td align="left"> OPEN </td>
+<td align="left"> DEFAULT </td>
+<td align="left"> USERS </td>
+<td align="center"> No </td>
+<td align="left"> PASSWORD </td>
+</tr>
+<tr>
+<td align="left"> DBSAT_USER </td>
+<td align="left"> OPEN </td>
+<td align="left"> DEFAULT </td>
+<td align="left"> USERS </td>
+<td align="center"> No </td>
+<td align="left"> PASSWORD </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> OPEN </td>
+<td align="left"> RDSADMIN </td>
+<td align="left"> RDSADMIN </td>
+<td align="center"> No </td>
+<td align="left"> PASSWORD </td>
+</tr>
+<tr>
+<td align="left"> SYSTEM </td>
+<td align="left"> OPEN </td>
+<td align="left"> DEFAULT </td>
+<td align="left"> SYSTEM </td>
+<td align="center"> Yes </td>
+<td align="left"> PASSWORD </td>
+</tr>
+</table>
+<h3> User Schemas in SYSTEM or SYSAUX Tablespace </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.TBLSPACE </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No user data is stored in SYSTEM and SYSAUX tablespace by default. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The SYSTEM and SYSAUX tablespaces are reserved for Oracle-supplied user accounts. To avoid a possible denial of service caused by exhausting these resources, regular user schemas should not use these tablespaces.  </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75949r2, SV-75951r3 </td><td></td></tr>
+</table>
+<h3> Sample Schemas </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.SAMPLE </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No sample schemas found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Sample schemas are well-known accounts provided by Oracle to serve as simple examples for developers. They generally serve no purpose in a production database and should be removed because they unnecessarily increase the attack surface of the database. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 1.3<br>Oracle Database 12c STIG  v1 r10: Rule SV-76167r3 </td><td></td></tr>
+</table>
+<h3> Inactive Users </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.INACTIVE </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev3" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Low Risk </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 4 user accounts that would remain open even if inactive. No unlocked users inactive for more than 30 days found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Users with unlimited INACTIVE_ACCOUNT_TIME: ADMIN, DBSAT_USER, RDSADMIN,
+    SYSTEM
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> If a user account is no longer in use, it increases the attack surface of the system unnecessarily while providing no corresponding benefit. Furthermore, unauthorized use is less likely to be noticed when no one is regularly using the account. Accounts that have been unused for more than 30 days should be investigated to determine whether they should remain active. A solution is to set INACTIVE_ACCOUNT_TIME in the profiles assigned to users to automatically lock accounts that have not logged in to the database instance in a specified number of days. It is also recommended to audit infrequently used accounts for unauthorized activities. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-76207r2 </td><td></td></tr>
+</table>
+<h3> Users with Expired Passwords </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.EXPIRED </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No unlocked users found with password expired for more than 30 days. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Password expiration is used to ensure that users change their passwords regularly. If a user's password has been expired for more than 30 days, it indicates that the user has not logged in for at least that long. Accounts that have been unused for an extended period of time should be investigated to determine whether they should remain active. </td><td></td></tr>
+</table>
+<h3> Case-Sensitive Passwords </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.CASE </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Case-sensitive passwords are used. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+SEC_CASE_SENSITIVE_LOGON = TRUE
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Case-sensitive passwords are recommended because including both upper and lower-case letters greatly increases the set of possible passwords that must be searched by an attacker who is attempting to guess a password by exhaustive search. Setting database initialization parameter SEC_CASE_SENSITIVE_LOGON to TRUE ensures that the database distinguishes between upper and lower-case letters in passwords. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.2.12 </td><td></td></tr>
+</table>
+<h3> Users with Default Passwords </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.DEFPWD </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No unlocked user accounts are using default password. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Default passwords for predefined Oracle accounts are well known and provide a trivial means of entry for attackers. Well-known passwords for locked accounts should be changed as well. If the database was created using a script and the SYS or SYSTEM user password has not been updated since the database creation, such a user is regarded to have a default password because the password used when the database was created may be at risk due to its presence within the script. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 1.2<br>Oracle Database 12c STIG  v1 r10: Rule SV-76031r1, SV-76339r1 </td><td></td></tr>
+</table>
+<h3> Minimum Client Authentication Version </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.AUTHVERS </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Minimum client version is not configured correctly. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+SQLNET.ALLOWED_LOGON_VERSION_SERVER is not set (default value = 12).
+    Recommended value is 12a.
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Over time, Oracle releases have added support for increasingly secure versions of the algorithm used for password authentication of user accounts. In order to remain compatible with older client software, the database continues to support previous password versions as well. The sqlnet.ora parameter ALLOWED_LOGON_VERSION_SERVER determines the minimum password version that the database will accept. For maximum security, this parameter should be set to the highest value supported by the database once all client systems have been upgraded. Consider evaluating before setting ALLOWED_LOGON_VERSION_SERVER to 12a as it may prevent older clients from connecting the database instance. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-76025r2 </td><td></td></tr>
+</table>
+<h3> Password Verifiers </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.VERIFIER </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 4 user accounts that require to remove older password verifiers.  No user accounts have HTTP verifiers.  </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Database supports password versions up to 12C.
+Users authenticated using the prior weaker password verifiers: (none)
+Users with latest 12C password verifier and weaker password verifiers:
+    ADMIN(11G 12C), DBSAT_USER(11G 12C), RDSADMIN(11G 12C), SYSTEM(11G 12C)
+
+Users with HTTP verifiers: (none)
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> For each user account, the database may store multiple verifiers, which are hashes of the user password. Each verifier supports a different version of the password authentication algorithm. Every user account should include a verifier for the latest password version supported by the database so that the user can be authenticated using the latest algorithm supported by the client. When all clients have been updated, the security of user accounts can be improved by removing the obsolete verifiers. HTTP password verifiers are used for XML Database authentication. Use the ALTER USER command to remove these verifiers from user accounts that do not require this access. </td><td></td></tr>
+</table>
+<h3> User Parameters </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.PARAM </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Examined 2 initialization parameters. No issues found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+SEC_MAX_FAILED_LOGIN_ATTEMPTS = 3
+RESOURCE_LIMIT = TRUE
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> SEC_MAX_FAILED_LOGIN_ATTEMPTS configures the maximum number of failed login attempts in a single session before the connection is closed. This is independent of the user profile parameter FAILED_LOGIN_ATTEMPTS, which controls locking the user account after multiple failed login attempts. 
+Not controlling failed login attempts before closing the connection and locking accounts after a number of failed logins, opens the door for successful brute-force login attacks and the occurrence of Denial-of-Service.
+RESOURCE_LIMIT should be set to TRUE to enable enforcement of any resource constraints set in user profiles. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.2.13, 2.2.19<br>Oracle Database 12c STIG  v1 r10: Rule SV-76305r4 </td><td></td></tr>
+</table>
+<h3> User Profiles </h3>
+<table cellpadding="4" border="1" rules="cols" summary="Data table for User Profiles">
+<thead><tr>
+<th align="left" scope="col"> Profile Name </th>
+<th align="left" scope="col"> Parameter </th>
+<th align="left" scope="col"> Value </th>
+</tr>
+</thead>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> (Number of Users) </td>
+<td align="left"> 3 </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> CONNECT_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> FAILED_LOGIN_ATTEMPTS </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> IDLE_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> INACTIVE_ACCOUNT_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> PASSWORD_GRACE_TIME </td>
+<td align="left"> 7 day(s) </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> PASSWORD_LIFE_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> PASSWORD_LOCK_TIME </td>
+<td align="left"> 1 day(s) </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> PASSWORD_REUSE_MAX </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> PASSWORD_REUSE_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> PASSWORD_ROLLOVER_TIME </td>
+<td align="left"> 0 </td>
+</tr>
+<tr>
+<td align="left"> DEFAULT </td>
+<td align="left"> PASSWORD_VERIFY_FUNCTION </td>
+<td align="left"> NULL </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> (Number of Users) </td>
+<td align="left"> 0 </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> CONNECT_TIME </td>
+<td align="left"> UNLIMITED (DEFAULT) </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> FAILED_LOGIN_ATTEMPTS </td>
+<td align="left"> 3 </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> IDLE_TIME </td>
+<td align="left"> 15 minute(s) </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> INACTIVE_ACCOUNT_TIME </td>
+<td align="left"> 35 day(s) </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> PASSWORD_GRACE_TIME </td>
+<td align="left"> 5 day(s) </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> PASSWORD_LIFE_TIME </td>
+<td align="left"> 60 day(s) </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> PASSWORD_LOCK_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> PASSWORD_REUSE_MAX </td>
+<td align="left"> 10 </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> PASSWORD_REUSE_TIME </td>
+<td align="left"> 365 day(s) </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> PASSWORD_ROLLOVER_TIME </td>
+<td align="left"> 0 (DEFAULT) </td>
+</tr>
+<tr>
+<td align="left"> ORA_STIG_PROFILE </td>
+<td align="left"> PASSWORD_VERIFY_FUNCTION </td>
+<td align="left"> ORA12C_STIG_VERIFY_FUNCTION </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> (Number of Users) </td>
+<td align="left"> 1 </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> CONNECT_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> FAILED_LOGIN_ATTEMPTS </td>
+<td align="left"> 10 </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> IDLE_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> INACTIVE_ACCOUNT_TIME </td>
+<td align="left"> UNLIMITED (DEFAULT) </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> PASSWORD_GRACE_TIME </td>
+<td align="left"> 7 day(s) </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> PASSWORD_LIFE_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> PASSWORD_LOCK_TIME </td>
+<td align="left"> 1 day(s) </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> PASSWORD_REUSE_MAX </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> PASSWORD_REUSE_TIME </td>
+<td align="left"> UNLIMITED </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> PASSWORD_ROLLOVER_TIME </td>
+<td align="left"> 0 (DEFAULT) </td>
+</tr>
+<tr>
+<td align="left"> RDSADMIN </td>
+<td align="left"> PASSWORD_VERIFY_FUNCTION </td>
+<td align="left"> NULL </td>
+</tr>
+</table>
+<h3> Users with Unlimited Password Lifetime </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.NOEXPIRE </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev3" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Low Risk </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 4 users with passwords that never expire. Found 4 users with no limits on password reuse. Found 4 users with no minimum time before password reuse. All user accounts will lock after password expiration. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+PASSWORD_LIFE_TIME:
+Profiles with limited password lifetime: ORA_STIG_PROFILE (60 days)
+Profiles with unlimited password lifetime: DEFAULT, RDSADMIN
+Users with unlimited password lifetime: ADMIN, DBSAT_USER, RDSADMIN, SYSTEM
+
+PASSWORD_REUSE_MAX:
+Profiles with limits on password reuse: ORA_STIG_PROFILE (10 times)
+Profiles without limits on password reuse: DEFAULT, RDSADMIN
+Users without limits on password reuse: ADMIN, DBSAT_USER, RDSADMIN, SYSTEM
+
+PASSWORD_REUSE_TIME:
+Profiles with minimum time before password reuse: ORA_STIG_PROFILE (365
+    days)
+Profiles without minimum time before password reuse: DEFAULT, RDSADMIN
+Users without minimum time before password reuse: ADMIN, DBSAT_USER,
+    RDSADMIN, SYSTEM
+
+PASSWORD_GRACE_TIME:
+Profiles with locking after password expiration: DEFAULT (7 days),
+    ORA_STIG_PROFILE (5 days), RDSADMIN (7 days)
+Profiles without locking after password expiration: (none)
+Users without locking after password expiration: (none)
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Password expiration is used to ensure that users change their passwords on a regular basis. It also provides a mechanism to automatically disable temporary accounts. Passwords that never expire may remain unchanged for an extended period of time. When passwords do not have to be changed regularly, users are also more likely to use the same passwords for multiple accounts. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 3.3, 3.4, 3.5, 3.6<br>Oracle Database 12c STIG  v1 r10: Rule SV-76047r2, SV-76051r3, SV-76211r2, SV-76229r2 </td><td></td></tr>
+</table>
+<h3> Account Locking after Failed Login Attempts </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.NOLOCK </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev4" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Medium Risk </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 3 users with unlimited failed login attempts. User accounts are configured to stay locked for a minimum duration after being locked due to failed login attempt. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+FAILED_LOGIN_ATTEMPTS:
+Profiles with limited failed login attempts: ORA_STIG_PROFILE (3), RDSADMIN
+    (10)
+Profiles with unlimited failed login attempts: DEFAULT
+Users with unlimited failed login attempts: ADMIN, DBSAT_USER, SYSTEM
+
+PASSWORD_LOCK_TIME:
+Profiles with minimum lock time: DEFAULT (1 day), RDSADMIN (1 day)
+Profiles without minimum lock time: ORA_STIG_PROFILE
+Users without minimum lock time: (none)
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Attackers sometimes attempt to guess a user's password by simply trying all possibilities from a set of common passwords. To defend against this attack, it is advisable to use the FAILED_LOGIN_ATTEMPTS and PASSWORD_LOCK_TIME profile resources to lock user accounts for a specified time when there are multiple failed login attempts without a successful login. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 3.1, 3.2<br>Oracle Database 12c STIG  v1 r10: Rule SV-76047r2, SV-76093r2, SV-76095r2, SV-76097r2 </td><td></td></tr>
+</table>
+<h3> Password Verification Functions </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.PASSWD </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev4" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Medium Risk </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 4 users not using password verification function. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Profiles with password verification function: ORA_STIG_PROFILE
+    (ORA12C_STIG_VERIFY_FUNCTION)
+Profiles without password verification function: DEFAULT, RDSADMIN
+Users without password verification function: ADMIN, DBSAT_USER, RDSADMIN,
+    SYSTEM
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Password verification functions are used to ensure that user passwords meet minimum requirements for complexity, which may include factors such as length, use of numbers or punctuation characters, the difference from previous passwords, etc. Oracle supplies several predefined functions, or a custom PL/SQL function can be used. Every user profile should include a password verification function. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 3.8<br>Oracle Database 12c STIG  v1 r10: Rule SV-76209r1, SV-76213r1, SV-76215r1 , SV-76217r1, SV-76219r1, SV-76221r1, SV-76225r1 </td><td></td></tr>
+</table>
+<h3> Users with Unlimited Concurrent Sessions </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> USER.SESSIONS </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev3" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Low Risk </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 3 users with ability to create unlimited concurrent sessions. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+SESSIONS_PER_USER:
+Profiles with limited concurrent sessions: (none)
+Profiles without limited concurrent sessions: DEFAULT, ORA_STIG_PROFILE,
+    RDSADMIN
+Users with unlimited concurrent sessions: ADMIN, DBSAT_USER, RDSADMIN
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The SESSIONS_PER_USER parameter determines the maximum number of sessions a user can create concurrently. A user's ability to create unlimited sessions may result in memory resource exhaustion or Denial-of-Service attacks. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 3.9 </td><td></td></tr>
+</table>
+<h2><a name="Privileges_and_Roles">Privileges and Roles</a></h2>
+<h3> System Privilege Grants </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.SYSTEM </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 4 out of 4 users have been directly or indirectly granted system privileges via 713 grants.
+ 3 users are granted system privileges with admin option via 31 grants.
+ 4 users are granted 17 system privileges directly.
+ </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Users directly or indirectly granted each system privilege:
+
+ADMINISTER ANY SQL TUNING SET: ADMIN, RDSADMIN, SYSTEM
+ADMINISTER DATABASE TRIGGER: ADMIN, RDSADMIN(D), SYSTEM
+ADMINISTER RESOURCE MANAGER: ADMIN, RDSADMIN, SYSTEM
+ADMINISTER SQL MANAGEMENT OBJECT: ADMIN, RDSADMIN, SYSTEM
+ADMINISTER SQL TUNING SET: ADMIN, RDSADMIN, SYSTEM
+ADVISOR: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY ANALYTIC VIEW: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY ASSEMBLY: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY ATTRIBUTE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY CLUSTER: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY CUBE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY CUBE BUILD PROCESS: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY CUBE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY DIMENSION: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY EDITION: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY EVALUATION CONTEXT: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY HIERARCHY: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY INDEX: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY INDEXTYPE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY LIBRARY: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY MATERIALIZED VIEW: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY MEASURE FOLDER: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY MINING MODEL: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY OPERATOR: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY OUTLINE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY PROCEDURE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY ROLE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY RULE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY RULE SET: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY SEQUENCE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY SQL PROFILE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY SQL TRANSLATION PROFILE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY TRIGGER: ADMIN, RDSADMIN, SYSTEM
+ALTER ANY TYPE: ADMIN, RDSADMIN, SYSTEM
+ALTER DATABASE: ADMIN, RDSADMIN(D), SYSTEM
+ALTER LOCKDOWN PROFILE: ADMIN, RDSADMIN, SYSTEM
+ALTER PROFILE: ADMIN, RDSADMIN, SYSTEM
+ALTER RESOURCE COST: ADMIN, RDSADMIN, SYSTEM
+ALTER ROLLBACK SEGMENT: ADMIN, RDSADMIN, SYSTEM
+ALTER SESSION: ADMIN, RDSADMIN, SYSTEM
+ALTER SYSTEM: ADMIN, RDSADMIN(D), SYSTEM
+ALTER TABLESPACE: ADMIN, RDSADMIN, SYSTEM
+ALTER USER: ADMIN, RDSADMIN, SYSTEM
+ANALYZE ANY: ADMIN, RDSADMIN, SYSTEM
+ANALYZE ANY DICTIONARY: ADMIN, RDSADMIN, SYSTEM
+AUDIT ANY: ADMIN, RDSADMIN, SYSTEM
+AUDIT SYSTEM: ADMIN, RDSADMIN, SYSTEM
+BACKUP ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+BECOME USER: ADMIN, RDSADMIN, SYSTEM
+CHANGE NOTIFICATION: ADMIN, RDSADMIN, SYSTEM
+COMMENT ANY MINING MODEL: ADMIN, RDSADMIN, SYSTEM
+COMMENT ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANALYTIC VIEW: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY ANALYTIC VIEW: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY ASSEMBLY: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY ATTRIBUTE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY CLUSTER: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY CONTEXT: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY CREDENTIAL: ADMIN(*), RDSADMIN(*), SYSTEM(*)
+CREATE ANY CUBE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY CUBE BUILD PROCESS: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY CUBE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY DIMENSION: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY DIRECTORY: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY EDITION: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY EVALUATION CONTEXT: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY HIERARCHY: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY INDEX: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY INDEXTYPE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY JOB: ADMIN(*), RDSADMIN(*), SYSTEM(*)
+CREATE ANY LIBRARY: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY MATERIALIZED VIEW: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY MEASURE FOLDER: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY MINING MODEL: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY OPERATOR: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY OUTLINE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY PROCEDURE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY RULE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY RULE SET: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY SEQUENCE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY SQL PROFILE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY SQL TRANSLATION PROFILE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY SYNONYM: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY TRIGGER: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY TYPE: ADMIN, RDSADMIN, SYSTEM
+CREATE ANY VIEW: ADMIN, RDSADMIN, SYSTEM
+CREATE ASSEMBLY: ADMIN, RDSADMIN, SYSTEM
+CREATE ATTRIBUTE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+CREATE CLUSTER: ADMIN, RDSADMIN, SYSTEM
+CREATE CREDENTIAL: ADMIN(*), RDSADMIN(*), SYSTEM(*)
+CREATE CUBE: ADMIN, RDSADMIN, SYSTEM
+CREATE CUBE BUILD PROCESS: ADMIN, RDSADMIN, SYSTEM
+CREATE CUBE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+CREATE DATABASE LINK: ADMIN, RDSADMIN, SYSTEM
+CREATE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+CREATE EVALUATION CONTEXT: ADMIN, RDSADMIN, SYSTEM(*)
+CREATE EXTERNAL JOB: ADMIN(*), RDSADMIN(*), SYSTEM(*)
+CREATE HIERARCHY: ADMIN, RDSADMIN, SYSTEM
+CREATE INDEXTYPE: ADMIN, RDSADMIN, SYSTEM
+CREATE JOB: ADMIN(*), RDSADMIN(*), SYSTEM(*)
+CREATE LIBRARY: ADMIN, RDSADMIN, SYSTEM
+CREATE LOCKDOWN PROFILE: ADMIN, RDSADMIN, SYSTEM
+CREATE MATERIALIZED VIEW: ADMIN, RDSADMIN, SYSTEM(D)
+CREATE MEASURE FOLDER: ADMIN, RDSADMIN, SYSTEM
+CREATE MINING MODEL: ADMIN, RDSADMIN, SYSTEM
+CREATE OPERATOR: ADMIN, RDSADMIN, SYSTEM
+CREATE PLUGGABLE DATABASE: ADMIN, RDSADMIN, SYSTEM
+CREATE PROCEDURE: ADMIN, RDSADMIN, SYSTEM
+CREATE PROFILE: ADMIN, RDSADMIN, SYSTEM
+CREATE PUBLIC DATABASE LINK: ADMIN, RDSADMIN, SYSTEM
+CREATE PUBLIC SYNONYM: ADMIN, RDSADMIN, SYSTEM
+CREATE ROLE: ADMIN, RDSADMIN, SYSTEM
+CREATE ROLLBACK SEGMENT: ADMIN, RDSADMIN, SYSTEM
+CREATE RULE: ADMIN, RDSADMIN, SYSTEM(*)
+CREATE RULE SET: ADMIN, RDSADMIN, SYSTEM(*)
+CREATE SEQUENCE: ADMIN, RDSADMIN, SYSTEM
+CREATE SESSION: ADMIN, DBSAT_USER(D), RDSADMIN, SYSTEM
+CREATE SQL TRANSLATION PROFILE: ADMIN, RDSADMIN, SYSTEM
+CREATE SYNONYM: ADMIN, RDSADMIN, SYSTEM
+CREATE TABLE: ADMIN, RDSADMIN, SYSTEM(D)
+CREATE TABLESPACE: ADMIN, RDSADMIN, SYSTEM
+CREATE TRIGGER: ADMIN, RDSADMIN, SYSTEM
+CREATE TYPE: ADMIN, RDSADMIN, SYSTEM
+CREATE USER: ADMIN, RDSADMIN, SYSTEM
+CREATE VIEW: ADMIN, RDSADMIN, SYSTEM
+DEBUG ANY PROCEDURE: ADMIN, RDSADMIN, SYSTEM
+DEBUG CONNECT ANY: ADMIN, RDSADMIN, SYSTEM
+DEBUG CONNECT SESSION: ADMIN, RDSADMIN, SYSTEM
+DELETE ANY CUBE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+DELETE ANY MEASURE FOLDER: ADMIN, RDSADMIN, SYSTEM
+DELETE ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+DEQUEUE ANY QUEUE: ADMIN, RDSADMIN, SYSTEM(D)(*)
+DROP ANY ANALYTIC VIEW: ADMIN, RDSADMIN, SYSTEM
+DROP ANY ASSEMBLY: ADMIN, RDSADMIN, SYSTEM
+DROP ANY ATTRIBUTE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+DROP ANY CLUSTER: ADMIN, RDSADMIN, SYSTEM
+DROP ANY CONTEXT: ADMIN, RDSADMIN, SYSTEM
+DROP ANY CUBE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY CUBE BUILD PROCESS: ADMIN, RDSADMIN, SYSTEM
+DROP ANY CUBE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+DROP ANY DIMENSION: ADMIN, RDSADMIN, SYSTEM
+DROP ANY DIRECTORY: ADMIN, RDSADMIN, SYSTEM
+DROP ANY EDITION: ADMIN, RDSADMIN, SYSTEM
+DROP ANY EVALUATION CONTEXT: ADMIN, RDSADMIN, SYSTEM
+DROP ANY HIERARCHY: ADMIN, RDSADMIN, SYSTEM
+DROP ANY INDEX: ADMIN, RDSADMIN, SYSTEM
+DROP ANY INDEXTYPE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY LIBRARY: ADMIN, RDSADMIN, SYSTEM
+DROP ANY MATERIALIZED VIEW: ADMIN, RDSADMIN, SYSTEM
+DROP ANY MEASURE FOLDER: ADMIN, RDSADMIN, SYSTEM
+DROP ANY MINING MODEL: ADMIN, RDSADMIN, SYSTEM
+DROP ANY OPERATOR: ADMIN, RDSADMIN, SYSTEM
+DROP ANY OUTLINE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY PROCEDURE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY ROLE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY RULE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY RULE SET: ADMIN, RDSADMIN, SYSTEM
+DROP ANY SEQUENCE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY SQL PROFILE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY SQL TRANSLATION PROFILE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY SYNONYM: ADMIN, RDSADMIN, SYSTEM
+DROP ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY TRIGGER: ADMIN, RDSADMIN, SYSTEM
+DROP ANY TYPE: ADMIN, RDSADMIN, SYSTEM
+DROP ANY VIEW: ADMIN, RDSADMIN, SYSTEM
+DROP LOCKDOWN PROFILE: ADMIN, RDSADMIN, SYSTEM
+DROP PROFILE: ADMIN, RDSADMIN, SYSTEM
+DROP PUBLIC DATABASE LINK: ADMIN, RDSADMIN, SYSTEM
+DROP PUBLIC SYNONYM: ADMIN, RDSADMIN, SYSTEM
+DROP ROLLBACK SEGMENT: ADMIN, RDSADMIN, SYSTEM
+DROP TABLESPACE: ADMIN, RDSADMIN, SYSTEM
+DROP USER: ADMIN, RDSADMIN, SYSTEM
+EM EXPRESS CONNECT: ADMIN, RDSADMIN, SYSTEM
+ENQUEUE ANY QUEUE: ADMIN, RDSADMIN, SYSTEM(D)(*)
+EXECUTE ANY ASSEMBLY: ADMIN, RDSADMIN, SYSTEM
+EXECUTE ANY CLASS: ADMIN(*), RDSADMIN(*), SYSTEM(*)
+EXECUTE ANY EVALUATION CONTEXT: ADMIN, RDSADMIN, SYSTEM
+EXECUTE ANY INDEXTYPE: ADMIN, RDSADMIN, SYSTEM
+EXECUTE ANY LIBRARY: ADMIN, RDSADMIN, SYSTEM
+EXECUTE ANY OPERATOR: ADMIN, RDSADMIN, SYSTEM
+EXECUTE ANY PROCEDURE: ADMIN, RDSADMIN, SYSTEM
+EXECUTE ANY PROGRAM: ADMIN(*), RDSADMIN(*), SYSTEM(*)
+EXECUTE ANY RULE: ADMIN, RDSADMIN, SYSTEM
+EXECUTE ANY RULE SET: ADMIN, RDSADMIN, SYSTEM
+EXECUTE ANY TYPE: ADMIN, RDSADMIN, SYSTEM
+EXECUTE ASSEMBLY: ADMIN, RDSADMIN, SYSTEM
+EXEMPT REDACTION POLICY: ADMIN, RDSADMIN, SYSTEM
+EXPORT FULL DATABASE: ADMIN, RDSADMIN, SYSTEM
+FLASHBACK ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+FLASHBACK ARCHIVE ADMINISTER: ADMIN, RDSADMIN, SYSTEM
+FORCE ANY TRANSACTION: ADMIN, RDSADMIN, SYSTEM
+FORCE TRANSACTION: ADMIN, RDSADMIN, SYSTEM
+GLOBAL QUERY REWRITE: ADMIN, RDSADMIN, SYSTEM(D)
+GRANT ANY OBJECT PRIVILEGE: ADMIN, RDSADMIN(D)(*), SYSTEM
+GRANT ANY PRIVILEGE: ADMIN, RDSADMIN, SYSTEM
+GRANT ANY ROLE: ADMIN, RDSADMIN, SYSTEM
+IMPORT FULL DATABASE: ADMIN, RDSADMIN, SYSTEM
+INHERIT ANY PRIVILEGES: RDSADMIN(D)
+INSERT ANY CUBE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+INSERT ANY MEASURE FOLDER: ADMIN, RDSADMIN, SYSTEM
+INSERT ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+LOCK ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+LOGMINING: ADMIN, RDSADMIN, SYSTEM
+MANAGE ANY FILE GROUP: ADMIN, RDSADMIN, SYSTEM
+MANAGE ANY QUEUE: ADMIN, RDSADMIN, SYSTEM(D)(*)
+MANAGE FILE GROUP: ADMIN, RDSADMIN, SYSTEM
+MANAGE SCHEDULER: ADMIN(*), RDSADMIN(*), SYSTEM(*)
+MANAGE TABLESPACE: ADMIN, RDSADMIN, SYSTEM
+MERGE ANY VIEW: ADMIN, RDSADMIN, SYSTEM
+ON COMMIT REFRESH: ADMIN, RDSADMIN, SYSTEM
+QUERY REWRITE: ADMIN, RDSADMIN, SYSTEM
+READ ANY FILE GROUP: ADMIN, RDSADMIN, SYSTEM
+READ ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+REDEFINE ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+RESTRICTED SESSION: ADMIN, RDSADMIN, SYSTEM
+RESUMABLE: ADMIN, RDSADMIN, SYSTEM
+SELECT ANY CUBE: ADMIN, RDSADMIN, SYSTEM
+SELECT ANY CUBE BUILD PROCESS: ADMIN, RDSADMIN, SYSTEM
+SELECT ANY CUBE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+SELECT ANY DICTIONARY: ADMIN, RDSADMIN, SYSTEM
+SELECT ANY MEASURE FOLDER: ADMIN, RDSADMIN, SYSTEM
+SELECT ANY MINING MODEL: ADMIN, RDSADMIN, SYSTEM
+SELECT ANY SEQUENCE: ADMIN, RDSADMIN, SYSTEM
+SELECT ANY TABLE: ADMIN, RDSADMIN(D), SYSTEM(D)
+SELECT ANY TRANSACTION: ADMIN, RDSADMIN, SYSTEM
+SET CONTAINER: ADMIN, RDSADMIN, SYSTEM
+UNDER ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+UNDER ANY TYPE: ADMIN, RDSADMIN, SYSTEM
+UNDER ANY VIEW: ADMIN, RDSADMIN, SYSTEM
+UNLIMITED TABLESPACE: ADMIN(D), RDSADMIN(D), SYSTEM(D)
+UPDATE ANY CUBE: ADMIN, RDSADMIN, SYSTEM
+UPDATE ANY CUBE BUILD PROCESS: ADMIN, RDSADMIN, SYSTEM
+UPDATE ANY CUBE DIMENSION: ADMIN, RDSADMIN, SYSTEM
+UPDATE ANY TABLE: ADMIN, RDSADMIN, SYSTEM
+USE ANY JOB RESOURCE: ADMIN, RDSADMIN, SYSTEM
+USE ANY SQL TRANSLATION PROFILE: ADMIN, RDSADMIN, SYSTEM
+
+(*) = granted with admin option
+(D) = granted directly
+(C) = granted commonly
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> System privileges provide the ability to access data or perform administrative operations for the entire database. Consistent with the principle of least privilege, these privileges should be granted sparingly. The Privilege Analysis feature may be helpful to determine the minimum set of privileges required by a user or role. In some cases, it may be possible to substitute a more limited object privilege grant in place of a system privilege grant that applies to all objects. System privileges should be granted with admin option only when the recipient needs the ability to grant the privilege to others. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.7<br>Oracle Database 12c STIG  v1 r10: Rule SV-75923r3, SV-76065r1, SV-76081r3, SV-76299r3 </td><td></td></tr>
+</table>
+<h3> All Roles </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.ROLES </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 4 out of 4 users have been directly or indirectly granted roles via 60 grants.
+ </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Users directly or indirectly granted each role:
+
+ACCHK_READ: ADMIN, RDSADMIN, SYSTEM
+AQ_ADMINISTRATOR_ROLE: SYSTEM
+CAPTURE_ADMIN: ADMIN, RDSADMIN, SYSTEM
+CONNECT: RDSADMIN
+DATAPUMP_EXP_FULL_DATABASE: ADMIN, RDSADMIN, SYSTEM
+DATAPUMP_IMP_FULL_DATABASE: ADMIN, RDSADMIN, SYSTEM
+DBA: ADMIN, RDSADMIN, SYSTEM
+EM_EXPRESS_ALL: ADMIN, RDSADMIN, SYSTEM
+EM_EXPRESS_BASIC: ADMIN, RDSADMIN, SYSTEM
+EXECUTE_CATALOG_ROLE: ADMIN, RDSADMIN, SYSTEM
+EXP_FULL_DATABASE: ADMIN, RDSADMIN, SYSTEM
+GATHER_SYSTEM_STATISTICS: ADMIN, RDSADMIN, SYSTEM
+HS_ADMIN_EXECUTE_ROLE: ADMIN, RDSADMIN, SYSTEM
+HS_ADMIN_SELECT_ROLE: ADMIN, DBSAT_USER, RDSADMIN, SYSTEM
+IMP_FULL_DATABASE: ADMIN, RDSADMIN, SYSTEM
+OPTIMIZER_PROCESSING_RATE: ADMIN, RDSADMIN, SYSTEM
+RESOURCE: RDSADMIN
+SCHEDULER_ADMIN: ADMIN, RDSADMIN, SYSTEM
+SELECT_CATALOG_ROLE: ADMIN, DBSAT_USER, RDSADMIN, SYSTEM
+SODA_APP: RDSADMIN
+XDBADMIN: ADMIN, RDSADMIN, SYSTEM
+XDB_SET_INVOKER: ADMIN, RDSADMIN, SYSTEM
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Roles are a convenient way to manage groups of related privileges, especially when the privileges are required for a particular task or job function. Beware of broadly defined roles, which may confer more privileges than an individual recipient requires. Privilege Analysis can be used to determine specific privileges that the recipient actually requires. Roles should be granted with admin option only when the recipient needs the ability to modify the role or grant it to others.  </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.4.1 </td><td></td></tr>
+</table>
+<h3> Code Based Access Control </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.CBAC </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Code Based Access Control (CBAC) enabled for 2 Program Units.
+ </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Following Program Units are granted CBAC Roles:
+
+SYS.DBMS_MDX_ODBO: DBMS_MDX_INTERNAL
+System privileges granted via CBAC role: (none)
+Users with execute privilege on SYS.DBMS_MDX_ODBO: PUBLIC
+
+GSMADMIN_INTERNAL.EXCHANGE: DATAPUMP_EXP_FULL_DATABASE,
+    DATAPUMP_IMP_FULL_DATABASE
+System privileges granted via CBAC role: CREATE ANY PROCEDURE, DROP ANY
+    ROLE, UPDATE ANY TABLE, DROP ANY VIEW, CREATE ANY INDEXTYPE, CREATE
+    DATABASE LINK, CREATE PUBLIC SYNONYM, ALTER ANY PROCEDURE, READ ANY
+    FILE GROUP, CREATE ANY TYPE, ADMINISTER RESOURCE MANAGER, DROP ANY
+    LIBRARY, DROP ROLLBACK SEGMENT, GLOBAL QUERY REWRITE, DROP ANY TYPE,
+    CREATE ANY MATERIALIZED VIEW, CREATE ANY DIRECTORY, CREATE ANY
+    SEQUENCE, DROP ANY INDEXTYPE, CREATE ROLE, DROP ANY DIRECTORY, ALTER
+    TABLESPACE, DROP ANY MATERIALIZED VIEW, DROP ANY SEQUENCE, CREATE
+    PROFILE, CREATE ANY TRIGGER, CREATE ANY LIBRARY, DROP ANY SYNONYM,
+    EXEMPT REDACTION POLICY, CREATE ANY OPERATOR, FLASHBACK ANY TABLE,
+    ALTER USER, BECOME USER, CREATE TABLESPACE, MANAGE ANY QUEUE, ALTER ANY
+    TYPE, ALTER ANY TABLE, CREATE ANY VIEW, AUDIT ANY, DELETE ANY TABLE,
+    CREATE ANY TABLE, DROP ANY CONTEXT, CREATE SESSION, RESUMABLE, CREATE
+    ANY CLUSTER, EXECUTE ANY TYPE, GRANT ANY OBJECT PRIVILEGE, DROP ANY SQL
+    PROFILE, DROP ANY PROCEDURE, DROP TABLESPACE, CREATE ANY CONTEXT,
+    SELECT ANY SEQUENCE, DROP ANY OPERATOR, CREATE ANY INDEX, GRANT ANY
+    PRIVILEGE, EXECUTE ANY PROCEDURE, BACKUP ANY TABLE, INSERT ANY TABLE,
+    CREATE ANY DIMENSION, CREATE ANY SYNONYM, CREATE ROLLBACK SEGMENT, DROP
+    PUBLIC DATABASE LINK, ALTER DATABASE, CREATE TABLE, SELECT ANY TABLE,
+    ADMINISTER SQL MANAGEMENT OBJECT, ADMINISTER DATABASE TRIGGER, DROP ANY
+    TABLE, DROP ANY TRIGGER, DROP ANY DIMENSION, DROP ANY CLUSTER, AUDIT
+    SYSTEM, CREATE PUBLIC DATABASE LINK, DROP PROFILE, ALTER ANY TRIGGER,
+    DROP ANY OUTLINE, ALTER PROFILE, DROP ANY INDEX, DROP PUBLIC SYNONYM,
+    ANALYZE ANY, COMMENT ANY TABLE, CREATE USER, EXECUTE ANY OPERATOR,
+    GRANT ANY ROLE, DROP USER, CREATE ANY SQL PROFILE, ALTER RESOURCE COST
+Users with execute privilege on GSMADMIN_INTERNAL.EXCHANGE: (none)
+
+PUBLIC is granted Execute on Program Units via CBAC Role.
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Code Based Access Control (CBAC) can be used to grant additional privileges on program units like PL/SQL functions, procedures or packages. CBAC allows you to attach database roles to a PL/SQL function, procedure or package. These database roles are enabled at run time, enabling the program unit to execute with the required privileges in the calling user's environment. </td><td></td></tr>
+</table>
+<h3> Account Management Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.ACCT </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted account management privileges via 39 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of ALTER USER, CREATE USER, DROP USER:
+
+ADMIN &lt;- DBA: ALTER USER, CREATE USER, DROP USER
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: ALTER USER
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    ALTER USER, CREATE USER, DROP USER
+ADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL: ALTER USER, CREATE USER, DROP USER
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: ALTER USER, CREATE USER, DROP USER
+
+RDSADMIN &lt;- DBA: ALTER USER, CREATE USER, DROP USER
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: ALTER USER
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    IMP_FULL_DATABASE: ALTER USER, CREATE USER, DROP USER
+RDSADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL: ALTER USER, CREATE USER, DROP USER
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: ALTER USER, CREATE USER, DROP
+    USER
+
+SYSTEM &lt;- DBA: ALTER USER, CREATE USER, DROP USER
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: ALTER USER
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    ALTER USER, CREATE USER, DROP USER
+SYSTEM &lt;- DBA &lt;- EM_EXPRESS_ALL: ALTER USER, CREATE USER, DROP USER
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE: ALTER USER, CREATE USER, DROP
+    USER
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Account management privileges (ALTER USER, CREATE USER, DROP USER) can be used to create and modify other user accounts, including changing passwords. This ability can be abused to gain access to another user's account, which may have greater privileges. Users with Account management privileges should be audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75935r2 </td><td></td></tr>
+</table>
+<h3> Role and Privilege Management Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.MGMT </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted role and privilege management privileges via 76 grants.
+ 1 user is granted role and privilege management privileges with admin option via 1 grant.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of ALTER ANY ROLE, CREATE ROLE, DROP ANY ROLE, GRANT ANY OBJECT
+    PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE:
+
+ADMIN &lt;- DBA: ALTER ANY ROLE, CREATE ROLE, DROP ANY ROLE, GRANT ANY
+    OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: GRANT ANY OBJECT
+    PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    CREATE ROLE, DROP ANY ROLE, GRANT ANY OBJECT PRIVILEGE, GRANT ANY
+    PRIVILEGE, GRANT ANY ROLE
+ADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL: ALTER ANY ROLE, CREATE ROLE, DROP ANY
+    ROLE, GRANT ANY OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: CREATE ROLE, DROP ANY ROLE, GRANT
+    ANY OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+
+RDSADMIN: GRANT ANY OBJECT PRIVILEGE(*)
+RDSADMIN &lt;- DBA: ALTER ANY ROLE, CREATE ROLE, DROP ANY ROLE, GRANT ANY
+    OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: GRANT ANY OBJECT
+    PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    IMP_FULL_DATABASE: CREATE ROLE, DROP ANY ROLE, GRANT ANY OBJECT
+    PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+RDSADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL: ALTER ANY ROLE, CREATE ROLE, DROP
+    ANY ROLE, GRANT ANY OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY
+    ROLE
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: CREATE ROLE, DROP ANY ROLE,
+    GRANT ANY OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+
+SYSTEM &lt;- DBA: ALTER ANY ROLE, CREATE ROLE, DROP ANY ROLE, GRANT ANY
+    OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: GRANT ANY OBJECT
+    PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    CREATE ROLE, DROP ANY ROLE, GRANT ANY OBJECT PRIVILEGE, GRANT ANY
+    PRIVILEGE, GRANT ANY ROLE
+SYSTEM &lt;- DBA &lt;- EM_EXPRESS_ALL: ALTER ANY ROLE, CREATE ROLE, DROP
+    ANY ROLE, GRANT ANY OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY
+    ROLE
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE: CREATE ROLE, DROP ANY ROLE, GRANT
+    ANY OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+
+(*)  = granted with admin option
+(&lt;-) = granted via
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Users with role and privilege management privileges (ALTER ANY ROLE, CREATE ROLE, DROP ANY ROLE, GRANT ANY OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE) can change the set of roles and privileges granted to themselves and other users. This ability should be granted sparingly since it can be used to circumvent many security controls in the database. The Privilege Analysis feature may be helpful to determine whether a user or role have used privilege management privileges. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.3.10, 4.3.11, 4.3.12 </td><td></td></tr>
+</table>
+<h3> Database Management Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.DBMGMT </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted database management privilege via 41 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of ALTER DATABASE, ALTER SYSTEM, CREATE ANY LIBRARY, CREATE LIBRARY,
+    DROP ANY LIBRARY:
+
+ADMIN &lt;- DBA: ALTER DATABASE, ALTER SYSTEM, CREATE ANY LIBRARY, CREATE
+    LIBRARY, DROP ANY LIBRARY
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: ALTER DATABASE
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    ALTER DATABASE, CREATE ANY LIBRARY, DROP ANY LIBRARY
+ADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL: ALTER SYSTEM
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: ALTER DATABASE, CREATE ANY
+    LIBRARY, DROP ANY LIBRARY
+
+RDSADMIN: ALTER DATABASE, ALTER SYSTEM
+RDSADMIN &lt;- DBA: ALTER DATABASE, ALTER SYSTEM, CREATE ANY LIBRARY,
+    CREATE LIBRARY, DROP ANY LIBRARY
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: ALTER DATABASE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    IMP_FULL_DATABASE: ALTER DATABASE, CREATE ANY LIBRARY, DROP ANY LIBRARY
+RDSADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL: ALTER SYSTEM
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: ALTER DATABASE, CREATE ANY
+    LIBRARY, DROP ANY LIBRARY
+
+SYSTEM &lt;- DBA: ALTER DATABASE, ALTER SYSTEM, CREATE ANY LIBRARY, CREATE
+    LIBRARY, DROP ANY LIBRARY
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: ALTER DATABASE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    ALTER DATABASE, CREATE ANY LIBRARY, DROP ANY LIBRARY
+SYSTEM &lt;- DBA &lt;- EM_EXPRESS_ALL: ALTER SYSTEM
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE: ALTER DATABASE, CREATE ANY
+    LIBRARY, DROP ANY LIBRARY
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Database management privileges (ALTER DATABASE, ALTER SYSTEM, CREATE ANY LIBRARY, CREATE LIBRARY, DROP ANY LIBRARY) can be used to change the operation of the database and potentially bypass security protections. CREATE LIBRARY allows a user to create or replace a library. This ability should be granted only to trusted administrators and should be sufficiently audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.3.7, 4.3.8, 4.3.9 </td><td></td></tr>
+</table>
+<h3> Audit Management Package </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.AUDMGMT </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted EXECUTE on Audit management packages via 18 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of EXECUTE on DBMS_AUDIT_MGMT:
+
+ADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+ADMIN &lt;- DBA &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+ADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE: EXECUTE
+    on DBMS_AUDIT_MGMT
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE: EXECUTE
+    on DBMS_AUDIT_MGMT
+
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+RDSADMIN &lt;- DBA &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+RDSADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_AUDIT_MGMT
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_AUDIT_MGMT
+
+SYSTEM &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+SYSTEM &lt;- DBA &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_AUDIT_MGMT
+SYSTEM &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_AUDIT_MGMT
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_AUDIT_MGMT
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The DBMS_AUDIT_MGMT package is used to execute Audit Trail management procedures and functions. Users with the execute privilege can invoke subprograms like CLEAN_AUDIT_TRAIL that deletes audit trail records or files that have been archived. Access should be strictly limited and granted only to users with a legitimate need for this functionality. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: SV-76149r1, SV-76151r1, SV-76153r1 </td><td></td></tr>
+</table>
+<h3> Audit Management Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.AUDIT </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted privilege to manage audit policies via 24 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of AUDIT ANY, AUDIT SYSTEM:
+
+ADMIN &lt;- DBA: AUDIT ANY, AUDIT SYSTEM
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: AUDIT ANY, AUDIT SYSTEM
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    AUDIT ANY, AUDIT SYSTEM
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: AUDIT ANY, AUDIT SYSTEM
+
+RDSADMIN &lt;- DBA: AUDIT ANY, AUDIT SYSTEM
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: AUDIT ANY, AUDIT
+    SYSTEM
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    IMP_FULL_DATABASE: AUDIT ANY, AUDIT SYSTEM
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: AUDIT ANY, AUDIT SYSTEM
+
+SYSTEM &lt;- DBA: AUDIT ANY, AUDIT SYSTEM
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: AUDIT ANY, AUDIT SYSTEM
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    AUDIT ANY, AUDIT SYSTEM
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE: AUDIT ANY, AUDIT SYSTEM
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Audit management privileges (AUDIT ANY, AUDIT SYSTEM) can be used to add, drop and modify the audit policies for the database. These privileges should be granted to highly trusted administrators, since they may be abused to hide malicious activity. The Privilege Analysis feature may be helpful to determine whether the audit management privileges have been used by a user or role. Users with these privileges should be sufficiently audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.3.3<br>Oracle Database 12c STIG  v1 r10: Rule SV-76113r1 </td><td></td></tr>
+</table>
+<h3> Broad Data Access Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.DATA </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted broad data access privileges via 104 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of SELECT ANY TABLE, READ ANY TABLE, INSERT ANY TABLE, DELETE ANY
+    TABLE, ALTER ANY TABLE, UPDATE ANY TABLE, CREATE ANY TRIGGER, ALTER ANY
+    TRIGGER, CREATE ANY INDEX, CREATE ANY PROCEDURE, SELECT ANY DICTIONARY:
+
+ADMIN &lt;- DBA: ALTER ANY TABLE, ALTER ANY TRIGGER, CREATE ANY INDEX,
+    CREATE ANY PROCEDURE, CREATE ANY TRIGGER, DELETE ANY TABLE, INSERT ANY
+    TABLE, READ ANY TABLE, SELECT ANY DICTIONARY, SELECT ANY TABLE, UPDATE
+    ANY TABLE
+ADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    SELECT ANY TABLE
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: DELETE ANY TABLE, SELECT
+    ANY TABLE
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    SELECT ANY TABLE
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    ALTER ANY TABLE, ALTER ANY TRIGGER, CREATE ANY INDEX, CREATE ANY
+    PROCEDURE, CREATE ANY TRIGGER, DELETE ANY TABLE, INSERT ANY TABLE,
+    SELECT ANY TABLE, UPDATE ANY TABLE
+ADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE: SELECT ANY TABLE
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: ALTER ANY TABLE, ALTER ANY
+    TRIGGER, CREATE ANY INDEX, CREATE ANY PROCEDURE, CREATE ANY TRIGGER,
+    DELETE ANY TABLE, INSERT ANY TABLE, SELECT ANY TABLE, UPDATE ANY TABLE
+
+RDSADMIN: SELECT ANY TABLE
+RDSADMIN &lt;- DBA: ALTER ANY TABLE, ALTER ANY TRIGGER, CREATE ANY INDEX,
+    CREATE ANY PROCEDURE, CREATE ANY TRIGGER, DELETE ANY TABLE, INSERT ANY
+    TABLE, READ ANY TABLE, SELECT ANY DICTIONARY, SELECT ANY TABLE, UPDATE
+    ANY TABLE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;-
+    EXP_FULL_DATABASE: SELECT ANY TABLE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: DELETE ANY TABLE,
+    SELECT ANY TABLE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    EXP_FULL_DATABASE: SELECT ANY TABLE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    IMP_FULL_DATABASE: ALTER ANY TABLE, ALTER ANY TRIGGER, CREATE ANY
+    INDEX, CREATE ANY PROCEDURE, CREATE ANY TRIGGER, DELETE ANY TABLE,
+    INSERT ANY TABLE, SELECT ANY TABLE, UPDATE ANY TABLE
+RDSADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE: SELECT ANY TABLE
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: ALTER ANY TABLE, ALTER ANY
+    TRIGGER, CREATE ANY INDEX, CREATE ANY PROCEDURE, CREATE ANY TRIGGER,
+    DELETE ANY TABLE, INSERT ANY TABLE, SELECT ANY TABLE, UPDATE ANY TABLE
+
+SYSTEM: SELECT ANY TABLE
+SYSTEM &lt;- DBA: ALTER ANY TABLE, ALTER ANY TRIGGER, CREATE ANY INDEX,
+    CREATE ANY PROCEDURE, CREATE ANY TRIGGER, DELETE ANY TABLE, INSERT ANY
+    TABLE, READ ANY TABLE, SELECT ANY DICTIONARY, SELECT ANY TABLE, UPDATE
+    ANY TABLE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    SELECT ANY TABLE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: DELETE ANY TABLE, SELECT
+    ANY TABLE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    SELECT ANY TABLE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    ALTER ANY TABLE, ALTER ANY TRIGGER, CREATE ANY INDEX, CREATE ANY
+    PROCEDURE, CREATE ANY TRIGGER, DELETE ANY TABLE, INSERT ANY TABLE,
+    SELECT ANY TABLE, UPDATE ANY TABLE
+SYSTEM &lt;- DBA &lt;- EXP_FULL_DATABASE: SELECT ANY TABLE
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE: ALTER ANY TABLE, ALTER ANY
+    TRIGGER, CREATE ANY INDEX, CREATE ANY PROCEDURE, CREATE ANY TRIGGER,
+    DELETE ANY TABLE, INSERT ANY TABLE, SELECT ANY TABLE, UPDATE ANY TABLE
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Users with broad data access privileges (SELECT ANY TABLE, READ ANY TABLE, INSERT ANY TABLE, DELETE ANY TABLE, ALTER ANY TABLE, UPDATE ANY TABLE, CREATE ANY TRIGGER, ALTER ANY TRIGGER, CREATE ANY INDEX, CREATE ANY PROCEDURE, SELECT ANY DICTIONARY) have access to data stored in any schema. Most administrative tasks do not require access to the data itself, so these privileges should be granted rarely even to administrators. Users with direct object privileges on tables that hold sensitive data should also be reviewed. In addition to minimizing grants of these privileges, consider the use of Database Vault realms to limit the use of these privileges to access sensitive data stored in user schemas.
+The Privilege Analysis feature may be helpful to restrict the use of broad data access privileges required by a user or role. In some cases, it may be possible to substitute a more limited object privilege grant for a broad data access privilege. Broad data access privileges should be granted with admin option only when the recipient needs the ability to grant the privilege to others. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.3.1, 4.3.2 </td><td></td></tr>
+</table>
+<h3> Access Control Exemption Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.EXEMPT </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted access control exemption privileges via 9 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of EXEMPT ACCESS POLICY, EXEMPT REDACTION POLICY:
+
+ADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    EXEMPT REDACTION POLICY
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    EXEMPT REDACTION POLICY
+ADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE: EXEMPT REDACTION POLICY
+
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;-
+    EXP_FULL_DATABASE: EXEMPT REDACTION POLICY
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    EXP_FULL_DATABASE: EXEMPT REDACTION POLICY
+RDSADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE: EXEMPT REDACTION POLICY
+
+SYSTEM &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    EXEMPT REDACTION POLICY
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    EXEMPT REDACTION POLICY
+SYSTEM &lt;- DBA &lt;- EXP_FULL_DATABASE: EXEMPT REDACTION POLICY
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Users with access control exemption privileges (EXEMPT ACCESS POLICY, EXEMPT REDACTION POLICY) can bypass the row and column access control policies enforced by Virtual Private Database and Data Redaction, respectively. Most administrative tasks do not require access to the data itself, so these privileges should be granted rarely even to administrators. Users with these privileges should be sufficiently audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.3.4 </td><td></td></tr>
+</table>
+<h3> Access to Password Verifier Tables </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.PASSWD </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No user granted read on dictionary tables containing password verifiers. No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Users with READ, SELECT and UPDATE privileges on dictionary tables containing verifiers can access and modify user password verifiers. The verifiers can be used in offline attacks to discover user passwords. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.5.1, 4.5.2, 4.5.3, 4.5.4, 4.5.6 </td><td></td></tr>
+</table>
+<h3> Write Access to Restricted Objects </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.OBJ </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted object privileges on Oracle Database restricted objects via 144 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of DELETE, INSERT, UPDATE on SYS, DVSYS, AUDSYS or LBACSYS objects:
+
+ADMIN &lt;- DBA: INSERT on SYS.XSDB$SCHEMA_ACL, UPDATE on
+    SYS.XSDB$SCHEMA_ACL
+ADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    DELETE on SYS.INCEXP, DELETE on SYS.INCFIL, DELETE on SYS.INCVID,
+    INSERT on SYS.INCEXP, INSERT on SYS.INCFIL, INSERT on SYS.INCVID,
+    UPDATE on SYS.INCEXP, UPDATE on SYS.INCFIL, UPDATE on SYS.INCVID
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    DELETE on SYS.INCEXP, DELETE on SYS.INCFIL, DELETE on SYS.INCVID,
+    INSERT on SYS.INCEXP, INSERT on SYS.INCFIL, INSERT on SYS.INCVID,
+    UPDATE on SYS.INCEXP, UPDATE on SYS.INCFIL, UPDATE on SYS.INCVID
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    DELETE on SYS.EXPIMP_TTS_CT$, DELETE on SYS.RADM_FPTM$, INSERT on
+    SYS.EXPIMP_TTS_CT$, INSERT on SYS.RADM_FPTM$, UPDATE on
+    SYS.EXPIMP_TTS_CT$
+ADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE: DELETE on SYS.INCEXP, DELETE on
+    SYS.INCFIL, DELETE on SYS.INCVID, INSERT on SYS.INCEXP, INSERT on
+    SYS.INCFIL, INSERT on SYS.INCVID, UPDATE on SYS.INCEXP, UPDATE on
+    SYS.INCFIL, UPDATE on SYS.INCVID
+ADMIN &lt;- DBA &lt;- GATHER_SYSTEM_STATISTICS: DELETE on SYS.AUX_STATS$,
+    DELETE on SYS.WRI$_OPTSTAT_AUX_HISTORY, INSERT on SYS.AUX_STATS$,
+    INSERT on SYS.WRI$_OPTSTAT_AUX_HISTORY, UPDATE on SYS.AUX_STATS$,
+    UPDATE on SYS.WRI$_OPTSTAT_AUX_HISTORY
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: DELETE on SYS.EXPIMP_TTS_CT$,
+    DELETE on SYS.RADM_FPTM$, INSERT on SYS.EXPIMP_TTS_CT$, INSERT on
+    SYS.RADM_FPTM$, UPDATE on SYS.EXPIMP_TTS_CT$
+ADMIN &lt;- DBA &lt;- OPTIMIZER_PROCESSING_RATE: DELETE on
+    SYS.OPT_CALIBRATION_STATS$, INSERT on SYS.OPT_CALIBRATION_STATS$,
+    UPDATE on SYS.OPT_CALIBRATION_STATS$
+
+RDSADMIN &lt;- DBA: INSERT on SYS.XSDB$SCHEMA_ACL, UPDATE on
+    SYS.XSDB$SCHEMA_ACL
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;-
+    EXP_FULL_DATABASE: DELETE on SYS.INCEXP, DELETE on SYS.INCFIL, DELETE
+    on SYS.INCVID, INSERT on SYS.INCEXP, INSERT on SYS.INCFIL, INSERT on
+    SYS.INCVID, UPDATE on SYS.INCEXP, UPDATE on SYS.INCFIL, UPDATE on
+    SYS.INCVID
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    EXP_FULL_DATABASE: DELETE on SYS.INCEXP, DELETE on SYS.INCFIL, DELETE
+    on SYS.INCVID, INSERT on SYS.INCEXP, INSERT on SYS.INCFIL, INSERT on
+    SYS.INCVID, UPDATE on SYS.INCEXP, UPDATE on SYS.INCFIL, UPDATE on
+    SYS.INCVID
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    IMP_FULL_DATABASE: DELETE on SYS.EXPIMP_TTS_CT$, DELETE on
+    SYS.RADM_FPTM$, INSERT on SYS.EXPIMP_TTS_CT$, INSERT on SYS.RADM_FPTM$,
+    UPDATE on SYS.EXPIMP_TTS_CT$
+RDSADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE: DELETE on SYS.INCEXP, DELETE on
+    SYS.INCFIL, DELETE on SYS.INCVID, INSERT on SYS.INCEXP, INSERT on
+    SYS.INCFIL, INSERT on SYS.INCVID, UPDATE on SYS.INCEXP, UPDATE on
+    SYS.INCFIL, UPDATE on SYS.INCVID
+RDSADMIN &lt;- DBA &lt;- GATHER_SYSTEM_STATISTICS: DELETE on
+    SYS.AUX_STATS$, DELETE on SYS.WRI$_OPTSTAT_AUX_HISTORY, INSERT on
+    SYS.AUX_STATS$, INSERT on SYS.WRI$_OPTSTAT_AUX_HISTORY, UPDATE on
+    SYS.AUX_STATS$, UPDATE on SYS.WRI$_OPTSTAT_AUX_HISTORY
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: DELETE on SYS.EXPIMP_TTS_CT$,
+    DELETE on SYS.RADM_FPTM$, INSERT on SYS.EXPIMP_TTS_CT$, INSERT on
+    SYS.RADM_FPTM$, UPDATE on SYS.EXPIMP_TTS_CT$
+RDSADMIN &lt;- DBA &lt;- OPTIMIZER_PROCESSING_RATE: DELETE on
+    SYS.OPT_CALIBRATION_STATS$, INSERT on SYS.OPT_CALIBRATION_STATS$,
+    UPDATE on SYS.OPT_CALIBRATION_STATS$
+
+SYSTEM &lt;- DBA: INSERT on SYS.XSDB$SCHEMA_ACL, UPDATE on
+    SYS.XSDB$SCHEMA_ACL
+SYSTEM &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    DELETE on SYS.INCEXP, DELETE on SYS.INCFIL, DELETE on SYS.INCVID,
+    INSERT on SYS.INCEXP, INSERT on SYS.INCFIL, INSERT on SYS.INCVID,
+    UPDATE on SYS.INCEXP, UPDATE on SYS.INCFIL, UPDATE on SYS.INCVID
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    DELETE on SYS.INCEXP, DELETE on SYS.INCFIL, DELETE on SYS.INCVID,
+    INSERT on SYS.INCEXP, INSERT on SYS.INCFIL, INSERT on SYS.INCVID,
+    UPDATE on SYS.INCEXP, UPDATE on SYS.INCFIL, UPDATE on SYS.INCVID
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    DELETE on SYS.EXPIMP_TTS_CT$, DELETE on SYS.RADM_FPTM$, INSERT on
+    SYS.EXPIMP_TTS_CT$, INSERT on SYS.RADM_FPTM$, UPDATE on
+    SYS.EXPIMP_TTS_CT$
+SYSTEM &lt;- DBA &lt;- EXP_FULL_DATABASE: DELETE on SYS.INCEXP, DELETE on
+    SYS.INCFIL, DELETE on SYS.INCVID, INSERT on SYS.INCEXP, INSERT on
+    SYS.INCFIL, INSERT on SYS.INCVID, UPDATE on SYS.INCEXP, UPDATE on
+    SYS.INCFIL, UPDATE on SYS.INCVID
+SYSTEM &lt;- DBA &lt;- GATHER_SYSTEM_STATISTICS: DELETE on SYS.AUX_STATS$,
+    DELETE on SYS.WRI$_OPTSTAT_AUX_HISTORY, INSERT on SYS.AUX_STATS$,
+    INSERT on SYS.WRI$_OPTSTAT_AUX_HISTORY, UPDATE on SYS.AUX_STATS$,
+    UPDATE on SYS.WRI$_OPTSTAT_AUX_HISTORY
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE: DELETE on SYS.EXPIMP_TTS_CT$,
+    DELETE on SYS.RADM_FPTM$, INSERT on SYS.EXPIMP_TTS_CT$, INSERT on
+    SYS.RADM_FPTM$, UPDATE on SYS.EXPIMP_TTS_CT$
+SYSTEM &lt;- DBA &lt;- OPTIMIZER_PROCESSING_RATE: DELETE on
+    SYS.OPT_CALIBRATION_STATS$, INSERT on SYS.OPT_CALIBRATION_STATS$,
+    UPDATE on SYS.OPT_CALIBRATION_STATS$
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Users with these privileges can directly modify objects in the SYS, DVSYS, AUDSYS or LBACSYS schemas. Manipulating these system objects may allow security protections to be circumvented or otherwise interfere with the normal operation of the database. PUBLIC must not be granted access to objects in SYS, DVSYS, AUDSYS and LBACSYS schemas. When running a Privilege Analysis Capture, be aware of privileges that have been granted to access objects in any Oracle-created schemas. Review the grants for relevance. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75929r3 </td><td></td></tr>
+</table>
+<h3> Access to Audit Objects </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.AUDOBJ </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 4 out of 4 users have been directly or indirectly granted object privileges on audit objects via 23 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of SELECT, DELETE, INSERT, UPDATE on AUDIT objects:
+
+ADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+ADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL &lt;- EM_EXPRESS_BASIC &lt;-
+    SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+ADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- SELECT_CATALOG_ROLE: SELECT
+    on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- SELECT_CATALOG_ROLE: SELECT
+    on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+ADMIN &lt;- DBA &lt;- SELECT_CATALOG_ROLE: SELECT on
+    SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+
+DBSAT_USER &lt;- SELECT_CATALOG_ROLE: SELECT on
+    SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+RDSADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL &lt;- EM_EXPRESS_BASIC &lt;-
+    SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+RDSADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- SELECT_CATALOG_ROLE:
+    SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- SELECT_CATALOG_ROLE:
+    SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+RDSADMIN &lt;- DBA &lt;- SELECT_CATALOG_ROLE: SELECT on
+    SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+RDSADMIN &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+
+SYSTEM &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+SYSTEM &lt;- DBA &lt;- EM_EXPRESS_ALL &lt;- EM_EXPRESS_BASIC &lt;-
+    SELECT_CATALOG_ROLE: SELECT on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+SYSTEM &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- SELECT_CATALOG_ROLE: SELECT
+    on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- SELECT_CATALOG_ROLE: SELECT
+    on SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+SYSTEM &lt;- DBA &lt;- SELECT_CATALOG_ROLE: SELECT on
+    SYS.AUDTAB$TBS$FOR_EXPORT_TBL
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Users with these privileges can directly access and modify objects containing audit information. Access to these objects may allow a malicious user to deduce privilege settings for other users and to manipulate the audit information by replacing or deleting audit records.
+Use Privilege Analysis to identify used and unused access to these privileges. Instead of granting a default role with many privileges such as DBA or SELECT_CATALOG_ROLE, create custom roles that only contain the necessary system and object privileges the user or role needs to perform the task. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-76143r2, SV-76145r1, SV-76147r1, SV-76159r1 </td><td></td></tr>
+</table>
+<h3> User Impersonation Privilege </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.USER </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted user impersonation privilege via 9 grants.
+ No grants to PUBLIC. 3 out of 4 users have been directly or indirectly granted EXECUTE on restricted packages that can be executed with the identity of some other user via 24 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of BECOME USER:
+
+ADMIN &lt;- DBA: BECOME USER
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    BECOME USER
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: BECOME USER
+
+RDSADMIN &lt;- DBA: BECOME USER
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    IMP_FULL_DATABASE: BECOME USER
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: BECOME USER
+
+SYSTEM &lt;- DBA: BECOME USER
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    BECOME USER
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE: BECOME USER
+
+
+Grants of EXECUTE on DBMS_AQADM_SYS, DBMS_AQADM_SYSCALLS, DBMS_IJOB,
+    DBMS_PRVTAQIM, DBMS_REPCAT_SQL_UTL, DBMS_STREAMS_ADM_UTL,
+    DBMS_STREAMS_RPC, DBMS_SYS_SQL, INITJVMAUX, LTADM, WWV_DBMS_SQL,
+    WWV_EXECUTE_IMMEDIATE:
+
+ADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    EXECUTE on DBMS_IJOB
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+ADMIN &lt;- DBA &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+ADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE: EXECUTE
+    on DBMS_STREAMS_RPC
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: EXECUTE on DBMS_IJOB
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE: EXECUTE
+    on DBMS_STREAMS_RPC
+
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    IMP_FULL_DATABASE: EXECUTE on DBMS_IJOB
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+RDSADMIN &lt;- DBA &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+RDSADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_STREAMS_RPC
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: EXECUTE on DBMS_IJOB
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_STREAMS_RPC
+
+SYSTEM &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    EXECUTE on DBMS_IJOB
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+SYSTEM &lt;- DBA &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_STREAMS_RPC
+SYSTEM &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_STREAMS_RPC
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE: EXECUTE on DBMS_IJOB
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_STREAMS_RPC
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The BECOME USER privilege and some PL/SQL packages (DBMS_AQADM_SYS, DBMS_AQADM_SYSCALLS, DBMS_IJOB, DBMS_PRVTAQIM, DBMS_REPCAT_SQL_UTL, DBMS_STREAMS_ADM_UTL, DBMS_STREAMS_RPC, DBMS_SYS_SQL, INITJVMAUX, LTADM, WWV_DBMS_SQL, WWV_EXECUTE_IMMEDIATE) allow the execution of SQL code or external jobs using the identity of a different user. Access should be strictly limited and granted only to users with a legitimate need for this functionality. Use Privilege Analysis to identify used and unused access to these privileges. Users with BECOME USER privilege and EXECUTE privilege on the above packages should be sufficiently audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.2.1, 4.2.3 - 4.2.13, 4.3.5 </td><td></td></tr>
+</table>
+<h3> Data Exfiltration </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.EXFIL </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted EXECUTE on restricted packages that can be used for data exfiltration.  via 18 grants.
+ No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of EXECUTE on DBMS_BACKUP_RESTORE, UTL_DBWS, UTL_ORAMTS,
+    DBMS_FILE_TRANSFER:
+
+ADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+ADMIN &lt;- DBA &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+ADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE: EXECUTE
+    on DBMS_FILE_TRANSFER
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE: EXECUTE
+    on DBMS_FILE_TRANSFER
+
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+RDSADMIN &lt;- DBA &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on
+    DBMS_FILE_TRANSFER
+RDSADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_FILE_TRANSFER
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_FILE_TRANSFER
+
+SYSTEM &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE
+    &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+SYSTEM &lt;- DBA &lt;- EXECUTE_CATALOG_ROLE: EXECUTE on DBMS_FILE_TRANSFER
+SYSTEM &lt;- DBA &lt;- EXP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_FILE_TRANSFER
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE &lt;- EXECUTE_CATALOG_ROLE:
+    EXECUTE on DBMS_FILE_TRANSFER
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Some PL/SQL packages (DBMS_BACKUP_RESTORE, UTL_DBWS, UTL_ORAMTS, DBMS_FILE_TRANSFER) can send data from the database using the network or file system. Access should be granted only to users with a legitimate need for this functionality. Use Privilege Analysis to identify if these privileges were used. If not, consider revoking. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.1.19, 4.1.20, 4.2.2, 4.2.14 </td><td></td></tr>
+</table>
+<h3> System Privileges Granted to PUBLIC </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.SYSPUB </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Privileges granted to PUBLIC are available to all users. This generally should include few, if any, system privileges since these will not be needed by ordinary users who are not administrators. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75925r1 </td><td></td></tr>
+</table>
+<h3> Roles Granted to PUBLIC </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.ROLEPUB </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> PUBLIC has not been granted any role. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Roles granted to PUBLIC are available to all users. Most roles contain privileges that are not appropriate for all users. Use Privilege Analysis to identify if these privileges were used. If not, work with Oracle support and/or application provider to revoke them if possible. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75933r1 </td><td></td></tr>
+</table>
+<h3> Column Privileges Granted to PUBLIC </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.COLPUB </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No grants to PUBLIC. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Privileges granted to PUBLIC are available to all users. This should include column privileges only for data that is intended to be accessible to everyone. </td><td></td></tr>
+</table>
+<h3> Users with Administrative SYS* Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.ADMIN </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No user is granted administrative SYS* privileges.  </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+SYSDBA    (0): (none)
+SYSOPER   (0): (none)
+SYSBACKUP (0): (none)
+SYSDG     (0): (none)
+SYSKM     (0): (none)
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Administrative SYS* privileges allow a user to perform maintenance operations, including some that may occur while the database is not open. The SYSDBA privilege allows the user to run as SYS and perform virtually all privileged operations. Starting with Oracle Database 12.1, less powerful administrative privileges were introduced to allow users to perform specific  administrative tasks with less than full SYSDBA privileges. To achieve the benefit of this separation of duty, each of these administrative privileges should be granted to at least one named user account. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-76081r3 </td><td></td></tr>
+</table>
+<h3> Users with DBA Role </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.DBA </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 3 out of 4 users have been directly or indirectly granted highly sensitive DBA role via 3 grants.
+ </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of DBA role:
+
+ADMIN: DBA
+
+RDSADMIN: DBA
+
+SYSTEM: DBA
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The DBA is a powerful role and can be used to bypass many security controls. It should be granted to a small number of trusted administrators.
+As a best practice, it is recommended to create custom DBA-like roles with the minimum set of privileges that users require to execute their tasks (least privilege principle) and do not grant the DBA role. Privilege Analysis can assist in the task of identifying used/unused privileges and roles.
+Having different roles with minimum required privileges based on types of operations DBAs execute also helps to achieve Separation of Duties.
+Furthermore, each trusted user should have an individual account for accountability reasons. It is recommended to audit users with the DBA role to detect any unauthorized activity. Avoid granting the DBA or custom DBA-like powerful roles WITH ADMIN option unless absolutely necessary.
+Please note that Oracle may add or remove roles and privileges from the DBA role. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.4.4 </td><td></td></tr>
+</table>
+<h3> Users with Powerful Roles </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> PRIV.BIGROLES </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 4 out of 4 users have been directly or indirectly granted powerful roles via 63 grants.
+ 2 users are granted powerful roles with admin option via 2 grants.
+ </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Grants of AQ_ADMINISTRATOR_ROLE, EM_EXPRESS_ALL, EXP_FULL_DATABASE,
+    IMP_FULL_DATABASE, SELECT_CATALOG_ROLE, EXECUTE_CATALOG_ROLE,
+    DELETE_CATALOG_ROLE, OEM_MONITOR, DBA roles:
+
+ADMIN: DBA
+ADMIN &lt;- DBA: EM_EXPRESS_ALL, EXECUTE_CATALOG_ROLE, EXP_FULL_DATABASE,
+    IMP_FULL_DATABASE, SELECT_CATALOG_ROLE
+ADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE: EXP_FULL_DATABASE
+ADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    EXECUTE_CATALOG_ROLE, SELECT_CATALOG_ROLE
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: EXP_FULL_DATABASE,
+    IMP_FULL_DATABASE
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    EXECUTE_CATALOG_ROLE, SELECT_CATALOG_ROLE
+ADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    EXECUTE_CATALOG_ROLE, SELECT_CATALOG_ROLE
+ADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL &lt;- EM_EXPRESS_BASIC:
+    SELECT_CATALOG_ROLE
+ADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE: EXECUTE_CATALOG_ROLE,
+    SELECT_CATALOG_ROLE
+ADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: EXECUTE_CATALOG_ROLE,
+    SELECT_CATALOG_ROLE
+
+DBSAT_USER: SELECT_CATALOG_ROLE
+
+RDSADMIN: SELECT_CATALOG_ROLE(*), DBA
+RDSADMIN &lt;- DBA: EM_EXPRESS_ALL, EXECUTE_CATALOG_ROLE,
+    EXP_FULL_DATABASE, IMP_FULL_DATABASE, SELECT_CATALOG_ROLE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE: EXP_FULL_DATABASE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;-
+    EXP_FULL_DATABASE: EXECUTE_CATALOG_ROLE, SELECT_CATALOG_ROLE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: EXP_FULL_DATABASE,
+    IMP_FULL_DATABASE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    EXP_FULL_DATABASE: EXECUTE_CATALOG_ROLE, SELECT_CATALOG_ROLE
+RDSADMIN &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;-
+    IMP_FULL_DATABASE: EXECUTE_CATALOG_ROLE, SELECT_CATALOG_ROLE
+RDSADMIN &lt;- DBA &lt;- EM_EXPRESS_ALL &lt;- EM_EXPRESS_BASIC:
+    SELECT_CATALOG_ROLE
+RDSADMIN &lt;- DBA &lt;- EXP_FULL_DATABASE: EXECUTE_CATALOG_ROLE,
+    SELECT_CATALOG_ROLE
+RDSADMIN &lt;- DBA &lt;- IMP_FULL_DATABASE: EXECUTE_CATALOG_ROLE,
+    SELECT_CATALOG_ROLE
+
+SYSTEM: AQ_ADMINISTRATOR_ROLE(*), DBA
+SYSTEM &lt;- DBA: EM_EXPRESS_ALL, EXECUTE_CATALOG_ROLE, EXP_FULL_DATABASE,
+    IMP_FULL_DATABASE, SELECT_CATALOG_ROLE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE: EXP_FULL_DATABASE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_EXP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    EXECUTE_CATALOG_ROLE, SELECT_CATALOG_ROLE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE: EXP_FULL_DATABASE,
+    IMP_FULL_DATABASE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- EXP_FULL_DATABASE:
+    EXECUTE_CATALOG_ROLE, SELECT_CATALOG_ROLE
+SYSTEM &lt;- DBA &lt;- DATAPUMP_IMP_FULL_DATABASE &lt;- IMP_FULL_DATABASE:
+    EXECUTE_CATALOG_ROLE, SELECT_CATALOG_ROLE
+SYSTEM &lt;- DBA &lt;- EM_EXPRESS_ALL &lt;- EM_EXPRESS_BASIC:
+    SELECT_CATALOG_ROLE
+SYSTEM &lt;- DBA &lt;- EXP_FULL_DATABASE: EXECUTE_CATALOG_ROLE,
+    SELECT_CATALOG_ROLE
+SYSTEM &lt;- DBA &lt;- IMP_FULL_DATABASE: EXECUTE_CATALOG_ROLE,
+    SELECT_CATALOG_ROLE
+
+(*) = granted with admin option
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> DBA and other similarly powerful roles (AQ_ADMINISTRATOR_ROLE, EM_EXPRESS_ALL, EXP_FULL_DATABASE, IMP_FULL_DATABASE, SELECT_CATALOG_ROLE, EXECUTE_CATALOG_ROLE, DELETE_CATALOG_ROLE, OEM_MONITOR, DBA) contain powerful privileges that can be used to bypass security controls. They should be granted only to a small number of trusted administrators. It is recommended to audit users with these roles to detect any unauthorized activity. Use Privilege Analysis to identify if these privileges were used. If not, consider revoking. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 4.4.1, 4.4.2, 4.4.3<br>Oracle Database 12c STIG  v1 r10: Rule SV-75927r3 </td><td></td></tr>
+</table>
+<h2><a name="Authorization_Control">Authorization Control</a></h2>
+<h3> Database Vault </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUTH.DV </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> GDPR </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Database Vault is not enabled. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Database Vault provides for configurable policies to control the actions of database accounts with elevated privileges such as those accounts used by administrative users, applications and utilities.  Attacks (originating from external as well as internal sources) leverage privileged account credentials to access sensitive information. Database Vault realms prevent unauthorized access to sensitive data objects, even by user accounts with system privileges. Database Vault Command rules limit the accidental or malicious execution of SQL commands. You can use Database Vault to enforce separation of duties to prevent a single all-powerful user.  Also, it provides trusted paths to further restrict access to sensitive data using system factors such as IP address, program name, time of day and user name.
+ Database Vault operations control can be used to restrict common users from accessing pluggable database (PDB) local data in autonomous, regular Cloud or on-premises environments. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> EU GDPR 2016/679: Article 6, 25, 29, 32, 34, 89; Recital 28, 29, 78, 156<br>Oracle Database 12c STIG  v1 r10: Rule SV-76065r1 </td><td></td></tr>
+</table>
+<h3> Privilege Analysis </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUTH.PRIV </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No Privilege Analysis policies found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Users who can start the privilege analysis capture process: ADMIN,
+    RDSADMIN, SYSTEM
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Privilege Analysis records the privileges used during a real or simulated workload. After collecting data about the privileges that are actually used, this information can be leveraged to revoke or audit the use of privilege grants that are no longer used or to create roles with only the privileges that are used by the user or role. This helps implement the Least Privilege Model and minimize the risk from intentional or accidental abuse of privileges. </td><td></td></tr>
+</table>
+<h2><a name="Fine-Grained_Access_Control">Fine-Grained Access Control</a></h2>
+<h3> Data Redaction </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> ACCESS.REDACT </td>
+<td colspan="2">
+<span class="reftag"> GDPR </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No data is being dynamically redacted. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Users exempted from Data Redaction Policies: ADMIN, RDSADMIN, SYSTEM
+Users who can create or manage Data Redaction Policies: ADMIN, RDSADMIN,
+    SYSTEM
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Data Redaction automatically masks sensitive data found in the results of a database query. The data is masked immediately before it is returned as part of the result set, so it does not interfere with any conditions specified as part of the query. Access by users with the EXEMPT REDACTION POLICY privilege will not be affected by the redaction policy. Users who can execute the DBMS_REDACT package are able to create and modify redaction policies. Also, consider the use of Oracle Data Masking and Subsetting to permanently mask sensitive data when making copies for test or development use. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> EU GDPR 2016/679: Article 6, 25, 32, 34, 89; Recital 28, 29, 78, 156 </td><td></td></tr>
+</table>
+<h3> Virtual Private Database </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> ACCESS.VPD </td>
+<td colspan="2">
+<span class="reftag"> GDPR </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No VPD policies found that automatically limit access to certain rows and/or columns based upon the user or the database environment. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Users exempted from VPD Policies: (none)
+Users who can create or manage VPD Policies: ADMIN, RDSADMIN, SYSTEM
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Virtual Private Database (VPD) allows for fine-grained control over which rows and columns of a table are visible to a SQL statement. Access control using VPD limits each database session to only the specific data it should be able to access. Access by users with the EXEMPT ACCESS POLICY privilege will not be affected by VPD policies. Users who can execute the DBMS_RLS package are able to create and modify these policies. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> EU GDPR 2016/679: Article 29, 32 </td><td></td></tr>
+</table>
+<h3> Real Application Security </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> ACCESS.RAS </td>
+<td colspan="2">
+<span class="reftag"> GDPR </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No RAS policies found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Users not impacted by RAS Policies: (none)
+Users who can create or manage RAS policies: ADMIN, DBSFWUSER, RDSADMIN,
+    SYSTEM
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Real Application Security (RAS) is a more modern, advanced version of Virtual Private Database and provides fine-grained control over the rows and columns of a table that are visible to a SQL statement. RAS data access policies use a declarative syntax based on access control lists. Access by users with the EXEMPT ACCESS POLICY privilege will not be affected by RAS access policies. Users with ADMIN_SEC_POLICY and APPLY_SEC_POLICY privileges are able to create and modify these policies. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> EU GDPR 2016/679: Article 6, 25, 32, 34, 89; Recital 28, 29, 64, 78, 156 </td><td></td></tr>
+</table>
+<h3> Label Security </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> ACCESS.OLS </td>
+<td colspan="2">
+<span class="reftag"> GDPR </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Label Security is not enabled. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Oracle Label Security (OLS) uses classification labels for row level data and users to determine what data rows a user is allowed to see. OLS enforces access controls restricting users to only the data they are allowed to access. Access to sensitive data is controlled by comparing the data label with the requesting users label. A user label can be equivalent to their security clearance and can be thought of as an extension to standard database privileges and roles. Access by users with the EXEMPT ACCESS POLICY privilege will not be affected by the Label Security policies. Each policy has a corresponding administrative role; users who have this role are able to administer the policy. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> EU GDPR 2016/679: Article 18, 29, 32; Recital 67 </td><td></td></tr>
+</table>
+<h3> Transparent Sensitive Data Protection (TSDP) </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> ACCESS.TSDP </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No data tagged with sensitive types found.  Found 0 TSDP policy. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Policies: (none)
+
+Users with EXECUTE on SYS.DBMS_TSDP_MANAGE: (none)
+Users with EXECUTE on SYS.DBMS_TSDP_PROTECT: (none)
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Transparent Sensitive Data Protection (TSDP) allows a data type(such as Credit Card number) to be associated with each column that contains sensitive data. TSDP can then apply various data security features such as Data Redaction or Virtual Private Database to all instances of that particular type so that protection is uniform and consistent. Data from columns marked as sensitive is also automatically redacted in the database audit trail and trace logs. Users who can execute the DBMS_TSDP_MANAGE and DBMS_TSDP_PROTECT packages are able to manage sensitive data types and the protection actions that are applied to them. </td><td></td></tr>
+</table>
+<h2><a name="Auditing">Auditing</a></h2>
+<h3> Audit Records </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.RECORDS </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> GDPR </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Examined 3 audit trails. Found records in 1 audit trail.  </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Traditional Audit Trail: No records found
+FGA Audit Trail: No records found
+Unified Audit Trail: In use, 430 records found (May 14 2022 - May 14 2022)
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Auditing is an essential component for monitoring the activities on any system including the activities of highly privileged users. Oracle Database 12c introduced Unified Auditing that consolidate audit logs in a single unified audit trail and simplifies audit policy management and it is the recommended auditing mode moving forward. The AUDIT_SYSLOG_LEVEL parameter can be set to send an abbreviated version of audit records to a remote syslog collector. A better solution is to use Oracle Data Safe or Oracle Audit Vault and Database Firewall to centrally collect full audit records from multiple databases. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.2.2<br>EU GDPR 2016/679: Article 30, 33, 34<br>Oracle Database 12c STIG  v1 r10: Rule SV-75899r1, SV-76111r1, SV-76117r1, SV-76121r1, SV-76123r1, SV-76125r1, SV-76127r1, SV-76129r1, SV-76455r3 </td><td></td></tr>
+</table>
+<h3> Unified Audit Policies </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.UNIFIED </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> GDPR </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 7 unified audit policies out of which 2 are enabled. 50 privileges, actions or roles are audited.
+ </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Enabled Policies:
+
+ORA_LOGON_FAILURES: Audits 1 privilege/action/role as follows: LOGON
+Users audited: ALL USERS
+
+ORA_SECURECONFIG: Audits 49 privileges/actions/roles as follows: ADMINISTER
+    KEY MANAGEMENT, ALTER ANY PROCEDURE, ALTER ANY SQL TRANSLATION PROFILE,
+    ALTER ANY TABLE, ALTER DATABASE, ALTER DATABASE DICTIONARY, ALTER
+    DATABASE LINK, ALTER PLUGGABLE DATABASE, ALTER PROFILE, ALTER ROLE,
+    ALTER SYSTEM, ALTER USER, AUDIT SYSTEM, BECOME USER, CREATE ANY JOB,
+    CREATE ANY LIBRARY, CREATE ANY PROCEDURE, CREATE ANY SQL TRANSLATION
+    PROFILE, CREATE ANY TABLE, CREATE DATABASE LINK, CREATE DIRECTORY,
+    CREATE EXTERNAL JOB, CREATE PLUGGABLE DATABASE, CREATE PROFILE, CREATE
+    PUBLIC SYNONYM, CREATE ROLE, CREATE SQL TRANSLATION PROFILE, CREATE
+    USER, DROP ANY PROCEDURE, DROP ANY SQL TRANSLATION PROFILE, DROP ANY
+    TABLE, DROP DATABASE LINK, DROP DIRECTORY, DROP PLUGGABLE DATABASE,
+    DROP PROFILE, DROP PUBLIC SYNONYM, DROP ROLE, DROP USER, EXEMPT ACCESS
+    POLICY, EXEMPT REDACTION POLICY, GRANT ANY OBJECT PRIVILEGE, GRANT ANY
+    PRIVILEGE, GRANT ANY ROLE, LOGMINING, PURGE DBA_RECYCLEBIN, SET ROLE,
+    TRANSLATE ANY SQL, EXECUTE ON
+    REMOTE_SCHEDULER_AGENT.ADD_AGENT_CERTIFICATE, EXECUTE ON SYS.DBMS_RLS
+Users audited: ALL USERS
+
+
+Disabled Policies:
+
+ORA_ACCOUNT_MGMT: Audits 9 privileges/actions/roles
+ORA_CIS_RECOMMENDATIONS: Audits 35 privileges/actions/roles
+ORA_DATABASE_PARAMETER: Audits 3 privileges/actions/roles
+ORA_RAS_POLICY_MGMT: Audits 35 privileges/actions/roles
+ORA_RAS_SESSION_MGMT: Audits 14 privileges/actions/roles
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Unified Audit captures audit activity in one single unified audit trail. It also introduces new syntax for specifying effective audit policies including the ability to build conditions and add exclusions. As part of Unified Auditing feature, Oracle Database provides pre-defined unified audit policies that cover commonly mandated security-relevant audit settings. You can enable the audit policies that fit your audit requirements, or you can create your own policies using the pre-defined policies as templates.  </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> EU GDPR 2016/679: Article 30, 33, 34<br>Oracle Database 12c STIG  v1 r10: Rule SV-76361r1 </td><td></td></tr>
+</table>
+<h3> Audit User Logon / Logoff </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.CONN </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Database connection events are not fully audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Auditing not enabled: LOGOFF
+
+Unified audit - auditing enabled: LOGON
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Successful user connections to the database should be audited to assist with forensic analysis. Unsuccessful connection attempts can provide early warning of an attacker's attempt to gain access to the database. Auditing the LOGOFF time helps understand how long the session was active and is useful information for forensics. Auditing for LOGON and LOGOFF actions must be enabled for all the required users. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 5.1.22, 5.2.27<br>Oracle Database 12c STIG  v1 r10: Rule SV-76043r1, SV-76141r1, SV-76165r1 </td><td></td></tr>
+</table>
+<h3> Audit Administrative (SYS*) Users </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.ADMIN </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Actions of the SYS user are not audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Unified Audit policies enabled for administrators: (none)
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> It is important to audit administrative actions performed by the SYS user. Traditional audit policies do not apply to SYS, so the AUDIT_SYS_OPERATIONS parameter must be set to record SYS actions to a separate audit trail. Beginning with Oracle 12c, the same Unified Audit policies can be applied to SYS that are used to monitor other users. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.2.1<br>Oracle Database 12c STIG  v1 r10: SV-75983r1, Rule SV-76009r1, SV-76085r2 </td><td></td></tr>
+</table>
+<h3> Audit Database Management Activities </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.DBMGMT </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Actions related to database management are not audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Auditing not enabled: ALTER FUNCTION, ALTER PACKAGE, ALTER PROCEDURE, ALTER
+    PUBLIC DATABASE LINK, ALTER TRIGGER, AUDIT ANY, CREATE ANY DIRECTORY,
+    CREATE FUNCTION, CREATE LIBRARY, CREATE PACKAGE, CREATE PACKAGE BODY,
+    CREATE PROCEDURE, CREATE PUBLIC DATABASE LINK, CREATE SPFILE, CREATE
+    TRIGGER, DROP ANY DIRECTORY, DROP FUNCTION, DROP PACKAGE, DROP
+    PROCEDURE, DROP PUBLIC DATABASE LINK, DROP TRIGGER, SYSTEM AUDIT
+
+Unified audit - auditing enabled: ADMINISTER KEY MANAGEMENT, ALTER
+    DATABASE, ALTER DATABASE LINK, ALTER PLUGGABLE DATABASE, ALTER SYSTEM,
+    CREATE ANY LIBRARY, CREATE DATABASE LINK, CREATE EXTERNAL JOB, CREATE
+    PLUGGABLE DATABASE, CREATE PUBLIC SYNONYM, DROP ANY PROCEDURE, DROP
+    DATABASE LINK, DROP PLUGGABLE DATABASE, DROP PUBLIC SYNONYM, EXECUTE ON
+    SYS.DBMS_RLS
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Actions that affect the management of database features should always be audited. Each action or privilege listed here should be included in at least one enabled audit policy. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 5.1.9, 5.1.10, 5.1.11, 5.1.17, 5.1.19 - 5.1.21, 5.2.12 - 5.2.14, 5.2.20 - 5.2.26<br>Oracle Database 12c STIG  v1 r10: Rule SV-83467r1 </td><td></td></tr>
+</table>
+<h3> Audit Account Management Activities </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.ACCTMGMT </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Actions related to account management are audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Unified audit - auditing enabled: ALTER PROFILE, ALTER USER, CREATE
+    PROFILE, CREATE USER, DROP PROFILE, DROP USER
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Creation of new user accounts or modification of existing accounts can be used to gain access to the privileges of those accounts and should be audited. Each action or privilege listed here should be included in at least one enabled audit policy. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 5.1.1, 5.1.2, 5.1.3, 5.1.6, 5.1.7, 5.1.8, 5.2.1, 5.2.2, 5.2.3, 5.2.9, 5.2.10, 5.2.11<br>Oracle Database 12c STIG  v1 r10: Rule SV-76055r2, SV-76059r2, SV-76061r4, SV-76063r2, SV-76141r1, SV-76287r2, SV-76289r2, SV-76291r2, SV-76293r2 </td><td></td></tr>
+</table>
+<h3> Audit System Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.PRIV </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Auditing enabled for 30 privileges. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Unified Audit (30): ADMINISTER KEY MANAGEMENT, ALTER ANY PROCEDURE, ALTER
+    ANY SQL TRANSLATION PROFILE, ALTER ANY TABLE, ALTER DATABASE, ALTER
+    SYSTEM, AUDIT SYSTEM, BECOME USER, CREATE ANY JOB, CREATE ANY LIBRARY,
+    CREATE ANY PROCEDURE, CREATE ANY SQL TRANSLATION PROFILE, CREATE ANY
+    TABLE, CREATE EXTERNAL JOB, CREATE PUBLIC SYNONYM, CREATE SQL
+    TRANSLATION PROFILE, CREATE USER, DROP ANY PROCEDURE, DROP ANY SQL
+    TRANSLATION PROFILE, DROP ANY TABLE, DROP PUBLIC SYNONYM, DROP USER,
+    EXEMPT ACCESS POLICY, EXEMPT REDACTION POLICY, GRANT ANY OBJECT
+    PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE, LOGMINING, PURGE
+    DBA_RECYCLEBIN, TRANSLATE ANY SQL
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> System privileges are very powerful as they allow  access to objects across multiple schemas or make changes that could impact the entire database. This finding shows the system privileges that are audited by enabled audit policies. It is recommended that system  privileges such as ALTER SYSTEM, ALTER DATABASE, SELECT ANY TABLE, GRANT ANY OBJECT PRIVILEGE, GRANT ANY PRIVILEGE and DROP ANY PROCEDURE are audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 5.1.15, 5.1.16, 5.1.17 </td><td></td></tr>
+</table>
+<h3> Audit Roles with System Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.ROLE </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No Audit Policy enabled on roles. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> When you audit a role, Oracle Database audits all system privileges that are directly granted to the role. Users granted these roles will be audited for the system privileges granted to the role. </td><td></td></tr>
+</table>
+<h3> Audit Powerful Privileges </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.PRIVUSE </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Use of powerful system privileges is not fully audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Auditing not enabled: CREATE ANY TRIGGER, SELECT ANY DICTIONARY
+
+Unified audit - auditing enabled: ALTER ANY SQL TRANSLATION PROFILE, BECOME
+    USER, CREATE ANY JOB, CREATE ANY PROCEDURE, CREATE ANY SQL TRANSLATION
+    PROFILE, EXEMPT ACCESS POLICY, EXEMPT REDACTION POLICY, LOGMINING,
+    TRANSLATE ANY SQL
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The use of powerful system privileges should always be audited. Each privilege listed here should be included in at least one enabled audit policy. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 5.1.14, 5.2.18 </td><td></td></tr>
+</table>
+<h3> Audit Privilege Management </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.PRIVMGMT </td>
+<td colspan="2">
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Privilege management actions are audited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Unified audit - auditing enabled: ALTER ROLE, CREATE ROLE, DROP ROLE, GRANT
+    ANY OBJECT PRIVILEGE, GRANT ANY PRIVILEGE, GRANT ANY ROLE
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Granting additional privileges to users or roles potentially affects most security protection and should be audited. Each action or privilege listed here should be included in at least one enabled audit policy. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 5.1.4, 5.1.5, 5.1.15, 5.1.16, 5.2.4 - 5.2.8 </td><td></td></tr>
+</table>
+<h3> Audit SQL Statements </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.STMT </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Auditing enabled for 18 statements. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Unified Audit (18): ALTER DATABASE DICTIONARY, ALTER DATABASE LINK, ALTER
+    PLUGGABLE DATABASE, ALTER PROFILE, ALTER ROLE, ALTER USER, CREATE
+    DATABASE LINK, CREATE DIRECTORY, CREATE PLUGGABLE DATABASE, CREATE
+    PROFILE, CREATE ROLE, DROP DATABASE LINK, DROP DIRECTORY, DROP
+    PLUGGABLE DATABASE, DROP PROFILE, DROP ROLE, LOGON, SET ROLE
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> This finding shows the SQL statements that are audited by enabled audit policies. It is recommended that SQL statements like GRANT DIRECTORY and LOCK TABLE are audited. </td><td></td></tr>
+</table>
+<h3> Audit Object Actions </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.OBJ </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Auditing enabled for 2 objects. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Unified Audit:
+Schema REMOTE_SCHEDULER_AGENT (1): ADD_AGENT_CERTIFICATE
+Schema SYS (1): DBMS_RLS
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> This finding shows the object accesses that are audited by enabled audit policies. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-76141r1 </td><td></td></tr>
+</table>
+<h3> Fine Grained Audit </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> AUDIT.FGA </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No fine grained audit policies found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+No object found with fine grained auditing enabled.
+Users with EXECUTE on SYS.DBMS_FGA: ADMIN, RDSADMIN, SYSTEM
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Fine-Grained Audit (FGA) policies can record specific activity, such as access to a particular table with sensitive columns or access that occurs under specified conditions. This is an effective useful way to monitor unexpected data access while avoiding unnecessary audit records that correspond to normal activity. FGA policies allow an event handler to be specified. This event handler can be used to execute a PL/SQL function that warns a database administrator of suspicious activity. FGA policies should only be used in case unified audit configuration cannot answer the audit requirements. </td><td></td></tr>
+</table>
+<h2><a name="Encryption">Encryption</a></h2>
+<h3> Transparent Data Encryption </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CRYPT.TDE </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> GDPR </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 6 unencrypted tablespaces. No encrypted columns found. Examined 1 initialization parameter. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Unencrypted tablespaces: RDSADMIN, SYSAUX, SYSTEM, TEMP, UNDO_T1, USERS
+Encrypted tablespaces: (none)
+
+ENCRYPT_NEW_TABLESPACES = CLOUD_ONLY. Recommended value is ALWAYS.
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Encryption of sensitive data is a requirement in most regulated environments. Transparent Data Encryption automatically encrypts data as it is stored and decrypts it upon retrieval. This protects sensitive data from attacks that bypass the database and read data files directly. Encryption keys may be stored in wallets on the database server itself, or stored remotely in Oracle Key Vault for improved security. Additionally, attackers often leverage non-encrypted sensitive data for extortion or threaten to release sensitive data publicly (ransomware). Encryption keys may be stored in wallets on the database server itself, or stored remotely in Oracle Key Vault for improved security.The ENCRYPT_NEW_TABLESPACES parameter ensures that TDE tablespace encryption is applied to all newly created tablespaces. Setting this parameter to ALWAYS is recommended in order to protect all data regardless of the options specified when the tablespace is created. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> EU GDPR 2016/679: Article 6, 32, 34; Recital 83<br>Oracle Database 12c STIG  v1 r10: Rule SV-76157r2, SV-76245r2, SV-76251r1, SV-76261r2, SV-76263r3 </td><td></td></tr>
+</table>
+<h3> Encryption Key Wallet </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CRYPT.WALLET </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> GDPR </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 1 wallet. No wallets are stored in the data file directory. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Wallet Root location:
+
+Encryption wallet location: /rdsdbbin/oracle/admin/DB01_A/wallet
+Wallet type: FILE
+Status: NOT_AVAILABLE
+Keystore type: UNKNOWN
+Wallet order: SINGLE
+
+Data file directory: /rdsdbdata/db/dbs
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Wallets are encrypted files used to store encryption keys, passwords and other sensitive data. Wallet files should not be stored in the same directory with database data files, to avoid accidentally creating backups that include both encrypted data files and the wallet containing the master key protecting those files. For maximum separation of keys and data, consider storing encryption keys in Oracle Key Vault instead of wallet files. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> EU GDPR 2016/679: Article 6, 32, 34; Recital 83<br>Oracle Database 12c STIG  v1 r10: Rule SV-76015r1, SV-76223r2, SV-76233r2 </td><td></td></tr>
+</table>
+<h3> FIPS Mode for TDE and DBMS_CRYPTO </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CRYPT.DBFIPS </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> FIPS mode for Transparent Data Encryption (TDE) and DBMS_CRYPTO PL/SQL package is disabled. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+DBFIPS_140 = FALSE.
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Federal Information Processing Standard(140-2) is a U.S. government security standard that specifies security requirements. It is used to approve cryptographic modules. Setting parameter DBFIPS_140 = TRUE enables Transparent Data Encryption (TDE) and DBMS_CRYPTO PL/SQL package program units to run in a FIPS-compliant mode. FIPS mode is mostly used by departments and agencies of the United States federal government looking to meet FIPS and/or STIG compliance. Be aware that this setting and thus using the underlying FIPS-certified library incurs a slight amount of overhead when the library is first loaded. This is due to the verification of the library signature and the execution of the self-test. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-76249r3 </td><td></td></tr>
+</table>
+<h2><a name="Database_Configuration">Database Configuration</a></h2>
+<h3> Initialization Parameters for Security </h3>
+<table cellpadding="4" border="1" rules="cols" summary="Data table for Initialization Parameters for Security">
+<thead><tr>
+<th align="left" scope="col"> Name </th>
+<th align="left" scope="col"> Value </th>
+</tr>
+</thead>
+<tr>
+<td align="left"> ADG_ACCOUNT_INFO_TRACKING </td>
+<td align="left"> LOCAL </td>
+</tr>
+<tr>
+<td align="left"> AUDIT_FILE_DEST </td>
+<td align="left"> /rdsdbdata/admin/DB01/adump </td>
+</tr>
+<tr>
+<td align="left"> AUDIT_SYSLOG_LEVEL </td>
+<td align="left">  </td>
+</tr>
+<tr>
+<td align="left"> AUDIT_SYS_OPERATIONS </td>
+<td align="left"> TRUE </td>
+</tr>
+<tr>
+<td align="left"> AUDIT_TRAIL </td>
+<td align="left"> NONE </td>
+</tr>
+<tr>
+<td align="left"> COMPATIBLE </td>
+<td align="left"> 19.0.0 </td>
+</tr>
+<tr>
+<td align="left"> CURSOR_BIND_CAPTURE_DESTINATION </td>
+<td align="left"> memory+disk </td>
+</tr>
+<tr>
+<td align="left"> DBFIPS_140 </td>
+<td align="left"> FALSE </td>
+</tr>
+<tr>
+<td align="left"> DISPATCHERS </td>
+<td align="left">  </td>
+</tr>
+<tr>
+<td align="left"> ENCRYPT_NEW_TABLESPACES </td>
+<td align="left"> CLOUD_ONLY </td>
+</tr>
+<tr>
+<td align="left"> GLOBAL_NAMES </td>
+<td align="left"> FALSE </td>
+</tr>
+<tr>
+<td align="left"> LDAP_DIRECTORY_ACCESS </td>
+<td align="left"> NONE </td>
+</tr>
+<tr>
+<td align="left"> LDAP_DIRECTORY_SYSAUTH </td>
+<td align="left"> no </td>
+</tr>
+<tr>
+<td align="left"> O7_DICTIONARY_ACCESSIBILITY </td>
+<td align="left">  </td>
+</tr>
+<tr>
+<td align="left"> OS_AUTHENT_PREFIX </td>
+<td align="left"> ops$ </td>
+</tr>
+<tr>
+<td align="left"> OS_ROLES </td>
+<td align="left"> FALSE </td>
+</tr>
+<tr>
+<td align="left"> OUTBOUND_DBLINK_PROTOCOLS </td>
+<td align="left"> ALL </td>
+</tr>
+<tr>
+<td align="left"> PDB_LOCKDOWN </td>
+<td align="left">  </td>
+</tr>
+<tr>
+<td align="left"> PDB_OS_CREDENTIAL </td>
+<td align="left">  </td>
+</tr>
+<tr>
+<td align="left"> REMOTE_DEPENDENCIES_MODE </td>
+<td align="left"> TIMESTAMP </td>
+</tr>
+<tr>
+<td align="left"> REMOTE_LISTENER </td>
+<td align="left">  </td>
+</tr>
+<tr>
+<td align="left"> REMOTE_LOGIN_PASSWORDFILE </td>
+<td align="left"> EXCLUSIVE </td>
+</tr>
+<tr>
+<td align="left"> REMOTE_OS_AUTHENT </td>
+<td align="left"> FALSE </td>
+</tr>
+<tr>
+<td align="left"> REMOTE_OS_ROLES </td>
+<td align="left"> FALSE </td>
+</tr>
+<tr>
+<td align="left"> RESOURCE_LIMIT </td>
+<td align="left"> TRUE </td>
+</tr>
+<tr>
+<td align="left"> SEC_CASE_SENSITIVE_LOGON </td>
+<td align="left"> TRUE </td>
+</tr>
+<tr>
+<td align="left"> SEC_MAX_FAILED_LOGIN_ATTEMPTS </td>
+<td align="left"> 3 </td>
+</tr>
+<tr>
+<td align="left"> SEC_PROTOCOL_ERROR_FURTHER_ACTION </td>
+<td align="left"> (DROP,3) </td>
+</tr>
+<tr>
+<td align="left"> SEC_PROTOCOL_ERROR_TRACE_ACTION </td>
+<td align="left"> TRACE </td>
+</tr>
+<tr>
+<td align="left"> SEC_RETURN_SERVER_RELEASE_BANNER </td>
+<td align="left"> FALSE </td>
+</tr>
+<tr>
+<td align="left"> SQL92_SECURITY </td>
+<td align="left"> TRUE </td>
+</tr>
+<tr>
+<td align="left"> UNIFIED_AUDIT_SGA_QUEUE_SIZE </td>
+<td align="left"> 1048576 </td>
+</tr>
+<tr>
+<td align="left"> UNIFIED_AUDIT_SYSTEMLOG </td>
+<td align="left">  </td>
+</tr>
+<tr>
+<td align="left"> UTL_FILE_DIR </td>
+<td align="left">  </td>
+</tr>
+<tr>
+<td align="left"> _TRACE_FILES_PUBLIC </td>
+<td align="left">  </td>
+</tr>
+</table>
+<h3> Inference of Table Data </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.INFER </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Data inference attacks are properly blocked. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+SQL92_SECURITY = TRUE
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> When SQL92_SECURITY is set to TRUE, UPDATE and DELETE statements that refer to a column in their WHERE clauses will succeed only when the user has the privilege to SELECT from the same column. This parameter should be set to TRUE so that this requirement is enforced in order to prevent users from inferring the value of a column that they do not have the privilege to view.
+ </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.2.17<br>Oracle Database 12c STIG  v1 r10: Rule SV-75919r1 </td><td></td></tr>
+</table>
+<h3> Access to Password File </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.PWDFILE </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> The password file is configured correctly. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+REMOTE_LOGIN_PASSWORDFILE = EXCLUSIVE
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The REMOTE_LOGIN_PASSWORDFILE set to EXCLUSIVE allows the password file to contain distinct entries for each administrative user allowing them to be individually audited and tracked for their actions. It also allows passwords to be updated using the ALTER USER command. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75921r2 </td><td></td></tr>
+</table>
+<h3> Network Communication </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.NETCOM </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Examined 4 initialization parameters. No issues found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+REMOTE_LISTENER = (none)
+SEC_PROTOCOL_ERROR_FURTHER_ACTION = (DROP,3)
+SEC_PROTOCOL_ERROR_TRACE_ACTION = TRACE
+SEC_RETURN_SERVER_RELEASE_BANNER = FALSE
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> REMOTE_LISTENER allows a network listener running on another system to be used. This parameter should normally be unset to ensure that the local listener is used. The SEC_PROTOCOL_ERROR parameters control the database server's response when it receives malformed network packets from a client. Because these malformed packets may indicate an attempted attack by a malicious client, the parameters should be set to log the incident and terminate the connection. SEC_RETURN_SERVER_RELEASE_BANNER should be set to FALSE to limit the information that is returned to an unauthenticated client, which could be used to help determine the server's version number and thus the vulnerabilities. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.2.7, 2.2.14, 2.2.15, 2.2.16<br>Oracle Database 12c STIG  v1 r10: Rule SV-76305r4 </td><td></td></tr>
+</table>
+<h3> External OS Authorization </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.EXTAUTH </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Examined 3 initialization parameters. No issues found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+REMOTE_OS_AUTHENT = FALSE
+REMOTE_OS_ROLES = FALSE
+OS_ROLES = FALSE
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The OS_ROLES parameter determines whether roles granted to users are controlled by GRANT statements in the database or by the database server's operating system. REMOTE_OS_AUTHENT and REMOTE_OS_ROLES allow the client operating system to set the database user and roles. All of these parameters should be set to FALSE so that the authorizations of database users are managed by the database itself. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.2.6, 2.2.9, 2.2.10<br>Oracle Database 12c STIG  v1 r10: Rule SV-75915r1, SV-75917r1 </td><td></td></tr>
+</table>
+<h3> Instance Name Check </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.INSTNM </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Instance name does not contain database version number. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Instance Name = DB01
+Database Version = 19.15.0.0.0
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Instance names should not contain Oracle version numbers. Service names may be discovered by unauthenticated users. If the service name includes version numbers or other database product information, a malicious user may use that information to develop a targeted attack. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75903r1 </td><td></td></tr>
+</table>
+<h3> Triggers </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.TRIG </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No logon triggers found.  No disabled triggers found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> A trigger is code that executes whenever a specific event occurs, such as inserting data in a table or connecting to the database. Disabled Oracle provided triggers could be a potential cause for concern because whatever protection or monitoring they may be expected to provide is disabled. </td><td></td></tr>
+</table>
+<h3> Disabled Constraints </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.CONST </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> No disabled constraints found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Constraints are used to enforce and guarantee specific relationships between data items stored in the database. Disabled constraints are a potential cause for concern because the conditions they ensure are not enforced. </td><td></td></tr>
+</table>
+<h3> External Procedures </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.EXTPROC </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 3 external procedures. No external services found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+External procedures: SYS.DBMSHADOOPLIB, SYS.DM$RQEXTLIB, SYS.KUBSAGT_LIB
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> External procedures allow code written in other languages to be executed from PL/SQL. Note that modifications to external code cannot be controlled by the database. Be careful to ensure that only trusted code libraries are available to be executed. Although the database can spawn its own process to execute the external procedure, it is advisable to configure a listener service for this purpose so that the external code can run as a less-privileged OS user. The listener configuration should set EXTPROC_DLLS to identify the specific shared library code that can be executed rather than using the default value ANY. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.1.2<br>Oracle Database 12c STIG  v1 r10: Rule SV-76091r2, SV-76173r1, SV-76175r2 </td><td></td></tr>
+</table>
+<h3> Directory Objects </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.DIR </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 13 directory objects. No directory objects allow access to restricted Oracle directory paths. No directory objects allow both write and execute access. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Directory Name: DATA_PUMP_DIR
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/rdbms/log/
+Users or roles with access: EXP_FULL_DATABASE(READ, WRITE),
+    IMP_FULL_DATABASE(READ, WRITE)
+
+Directory Name: DBMS_OPTIM_ADMINDIR
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/rdbms/admin/
+Users or roles with access: (none)
+
+Directory Name: DBMS_OPTIM_LOGDIR
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/cfgtoollogs/
+Users or roles with access: (none)
+
+Directory Name: JAVA$JOX$CUJS$DIRECTORY$
+Path = /rdsdbbin/oracle/javavm/admin/
+Users or roles with access: (none)
+
+Directory Name: OPATCH_INST_DIR
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/OPatch/
+Users or roles with access: (none)
+
+Directory Name: OPATCH_LOG_DIR
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/QOpatch/
+Users or roles with access: (none)
+
+Directory Name: OPATCH_SCRIPT_DIR
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/QOpatch/
+Users or roles with access: (none)
+
+Directory Name: ORACLE_BASE
+Path = /rdsdbbin/
+Users or roles with access: (none)
+
+Directory Name: ORACLE_HOME
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/
+Users or roles with access: (none)
+
+Directory Name: ORACLE_OCM_CONFIG_DIR
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/ccr/state/
+Users or roles with access: ORACLE_OCM(READ, WRITE)
+
+Directory Name: ORACLE_OCM_CONFIG_DIR2
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/ccr/state/
+Users or roles with access: ORACLE_OCM(READ, WRITE)
+
+Directory Name: XMLDIR
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/rdbms/xml/
+Users or roles with access: (none)
+
+Directory Name: XSDDIR
+Path = /rdsdbbin/oracle.19.custom.r1.EE.1/rdbms/xml/schema/
+Users or roles with access: (none)
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Directory objects allow access to the server's file system from PL/SQL code within the database. Access to files that are used by the database kernel itself should not be permitted, as this may alter the operation of the database and bypass its access controls. </td><td></td></tr>
+</table>
+<h3> Database Links </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.LINKS </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 1 database link. Database link names may not be same as remote database connection they define. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+GLOBAL_NAMES = FALSE
+
+Users with CREATE DATABASE LINK privilege: ADMIN, RDSADMIN, SYSTEM
+Users with CREATE PUBLIC DATABASE LINK privilege: ADMIN, RDSADMIN, SYSTEM
+
+Private links:
+SYS: SYS_HUB
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Database links allow users to execute SQL statements that access tables in other databases. This allows for both querying and storing data on the remote database. It is advisable to set GLOBAL_NAMES to TRUE in order to ensure that link names match the databases they access. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.2.3<br>Oracle Database 12c STIG  v1 r10: Rule SV-75941r1, SV-75997r1, SV_76019r1 </td><td></td></tr>
+</table>
+<h3> Network Access Control </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.NETACL </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 1 network ACL. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+NETWORK_ACL_DEFE0D19F2212C05E0530A00000ADE10 (Host: *, Ports: Min - Max)
+Principal: GSMADMIN_INTERNAL, Action: deny, Privilege: resolve
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Network ACLs control the external servers that database users can access using network packages such as UTL_TCP and UTL_HTTP. Specifically, a database user needs the connect privilege to an external network host computer if he or she is connecting using the UTL_TCP, UTL_HTTP, UTL_SMTP and UTL_MAIL utility packages. To convert between a host name and its IP address using the UTL_INADDR package, the resolve privilege is required. Make sure that these permissions are limited to the minimum required by each user. </td><td></td></tr>
+</table>
+<h3> XML Database Access Control </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.XMLACL </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 4 XML Database ACLs. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Namespace: {http://xmlns.oracle.com/xdb/acl.xsd}
+Description: Protected:Readable by PUBLIC and all privileges to OWNER
+Principal: dav:owner, Action: grant, Privileges: all
+Principal: XDBADMIN, Action: grant, Privileges: all
+Principal: PUBLIC, Action: grant, Privileges: read-properties, read-
+    contents, read-acl, resolve
+
+Namespace: {http://xmlns.oracle.com/xdb/acl.xsd}
+Description: Public:All privileges to PUBLIC
+Principal: PUBLIC, Action: grant, Privileges: all
+
+Namespace: {http://xmlns.oracle.com/xdb/acl.xsd}
+Description: Private:All privileges to OWNER only and not accessible to
+    others
+Principal: dav:owner, Action: grant, Privileges: all
+
+Namespace: {http://xmlns.oracle.com/xdb/acl.xsd}
+Description: Read-Only:Readable by all and writeable by none
+Principal: PUBLIC, Action: grant, Privileges: read-properties, read-
+    contents, read-acl, resolve
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> XML ACLs control access to database resources using the XML DB feature. Every resource in the Oracle XML DB Repository hierarchy has an associated ACL. The ACL mechanism specifies a privilege-based access control for resources to principals, which are database users or roles. Whenever a resource is accessed, a security check is performed, and the ACL determines if the requesting user has sufficient privileges to access the resource. Make sure that these privileges are limited to the minimum required by each user. </td><td></td></tr>
+</table>
+<h3> Database Backup </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> CONF.BKUP </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev4" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Medium Risk </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Unencrypted Backup Pieces were found. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The database should be backed up regularly. This will help you to prevent loss of data in the event of a system failure and may help to quickly recover from a ransomware attack. Unencrypted backup data should not be transported on tape or disk to offsite storage for  safekeeping. Oracle Secure Backup (OSB) may also be used for tape data protection in a distributed environment.  </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-76179r1, SV-76183r1, SV-76185r1, SV-76187r1, SV-76189r1, SV-76191r1 </td><td></td></tr>
+</table>
+<h2><a name="Network_Configuration">Network Configuration</a></h2>
+<h3> Network Encryption </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> NET.CRYPT </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Native encryption is accepted but not required. Integrity check using checksums is accepted but not required. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+SQLNET.ENCRYPTION_SERVER is not set (default value = ACCEPTED).
+SQLNET.CRYPTO_CHECKSUM_SERVER is not set (default value = ACCEPTED).
+
+Examined 1 listener.
+
+L_DB01_001: IPC (0), TCP (2), TCPS (0)
+
+SSL_CERT_REVOCATION is not set (default value = NONE).
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Network encryption protects the confidentiality and integrity of communication between the database server and its clients. Either Native Encryption or TLS should be configured to ensure that the connections from clients are encrypted. For Native Encryption, both ENCRYPTION_SERVER and CRYPTO_CHECKSUM_SERVER should be set to REQUIRED.  For ease of deployment and compatibility, Oracle Database servers and clients are set to ACCEPT encrypted connections out of the box. This means that you can enable the desired encryption and integrity settings for a connection pair by configuring just one side of the connection, server-side or client-side. So, for example, if there are many Oracle clients connecting to an Oracle database instance, you can configure the required encryption and integrity settings for all these connections by making the appropriate sqlnet.ora changes at the server end. You do not need to implement configuration changes for each client separately. However, in this case, the risk of having plaintext data passed over the network still exists. Keep in mind that whether the security service is enabled or not is based on a combination of client and server configuration parameters.  If TLS is used, TCPS should be specified for all network ports and SSL_CERT_REVOCATION should be set to REQUIRED.  </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75937r2, SV-76035r5, SV-76165r1, SV-76193r2, SV-76195r2, SV-76203r4, SV-76205r4, SV-76231r3, SV-76233r2, SV-76239r1, SV-76241r1, SV-76305r4 </td><td></td></tr>
+</table>
+<h3> Client Nodes </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> NET.CLIENTS </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Valid node check is not enabled, can accept connections from any client. Neither TCP.INVITED_NODES nor TCP.EXCLUDED_NODES is set. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+TCP.VALIDNODE_CHECKING is not set (default value = NO). Recommended value
+    is YES.
+TCP.INVITED_NODES is not set.
+TCP.EXCLUDED_NODES is not set.
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> TCP.VALIDNODE_CHECKING should be enabled to control which client nodes can connect to the database server. Either an allowlist containing client nodes(IP Address/Hostname/Subnet) that are allowed to connect (TCP.INVITED_NODES) or a blocklist of nodes that are not allowed to connect (TCP.EXCLUDED_NODES) may be specified. Configuring both lists is an error; only the invited node list will be used in this case. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75985r1, SV-76005r2, SV-76305r4 </td><td></td></tr>
+</table>
+<h3> SQLNET Banners </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> NET.BANNER </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Connect banners are not fully configured. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+SEC_USER_AUDIT_ACTION_BANNER is not set. Should be set to a proper value.
+SEC_USER_UNAUTHORIZED_ACCESS_BANNER is not set. Should be set to a proper
+    value.
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> These banner messages are used to warn connecting users that unauthorized access is not permitted and that their activities may be audited. </td><td></td></tr>
+</table>
+<h3> Network Listener Configuration </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> NET.COST </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+<span class="reftag"> CIS </span>
+</td>
+</tr><tr>
+<td class="sev2" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Advisory </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Examined 1 listener. Listener parameters need to be evaluated. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Listeners examined: L_DB01_001
+
+Parameter setting for L_DB01_001:
+ADMIN_RESTRICTIONS_L_DB01_001 is not set (default value = OFF). Recommended
+    value is ON.
+DYNAMIC_REGISTRATION_L_DB01_001 is not set (default value = ON).
+    Recommended value is OFF.
+VALID_NODE_CHECKING_REGISTRATION_L_DB01_001 is not set (default value =
+    OFF). Should not be set to OFF.
+SECURE_PROTOCOL_L_DB01_001 is not set.
+SECURE_CONTROL_L_DB01_001 is not set.
+SECURE_REGISTER_L_DB01_001 is not set.
+CONNECTION_RATE_L_DB01_001 is not set.
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> These parameters are used to limit changes to the network listener configuration. ADMIN_RESTRICTIONS should be enabled to prevent parameter changes to the running listener. One of the following restrictions on service registration should be implemented: (a) prevent changes by disabling DYNAMIC_REGISTRATION, (b) limit the nodes that can make changes by enabling VALID_NODE_CHECKING_REGISTRATION, or (c) limit the network sources for changes using the COST parameters SECURE_PROTOCOL, SECURE_CONTROL and SECURE_REGISTER. CONNECTION_RATE determines the rate enforced across all the endpoints that are rate limited. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> CIS Oracle Database 12c Benchmark v2.0.0: Recommendation 2.1.1, 2.1.3, 2.1.4<br>Oracle Database 12c STIG  v1 r10: Rule SV-76273r1, SV-76305r4  </td><td></td></tr>
+</table>
+<h3> Listener Logging Control </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> NET.LISTENLOG </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Examined 1 listener. Found 0 listener not configured properly. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Listeners configured properly: L_DB01_001
+
+Parameter setting for L_DB01_001:
+LOGGING_L_DB01_001 is not set (default value = ON).
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> This parameter enables logging of listener activity. Log information can be useful for troubleshooting and to provide early warning of attempted attacks. </td><td></td></tr>
+</table>
+<h2><a name="Operating_System">Operating System</a></h2>
+<h3> OS Authentication </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> OS.AUTH </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev1" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Evaluate </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> 0 OS user can connect to the database via OS authentication. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+SYSDBA [rdsdb group]:
+SYSBACKUP [rdsdb group]:
+SYSKM [rdsdb group]:
+SYSDG [rdsdb group]:
+SYSRAC [rdsdb group]:
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> OS authentication allows operating system users within the specified user group to connect to the database with administrative privileges without any further authentication. This shows the OS group names and users that can exercise each administrative privilege. OS users with administrative privileges should be reviewed to prevent any unauthorized, malicious or unintentional access to the database. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75977r1, SV-76027r1 </td><td></td></tr>
+</table>
+<h3> Process Monitor Processes </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> OS.PMON </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 1 PMON process. The owner of the PMON process matches the ORACLE_HOME owner. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+PMON process: ora_pmon_DB01, Owner: rdsdb
+ORACLE_HOME owner: rdsdb
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The PMON process monitors user processes and frees resources when they terminate. This process should run with the user ID of the ORACLE_HOME owner. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-76069r1 </td><td></td></tr>
+</table>
+<h3> Agent Processes </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> OS.AGENT </td>
+<td colspan="2">
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 5 Agent processes. Agent process owners do not overlap with Listener or PMON process owners. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Owner: root
+Command: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent
+    -config /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-
+    agent.toml -envconfig /opt/aws/amazon-cloudwatch-agent/etc/env-
+    config.json -pidfile /opt/aws/amazon-cloudwatch-agent/var/amazon-
+    cloudwatch-agent.pid
+
+
+Owner: aws-rds+
+Command: /bin/bash /opt/aws/rdscustomagent/start_agent.sh
+
+
+Owner: aws-rds+
+Command: /opt/aws/rdscustomagent/java -XX:CompileThreshold=100000
+    -XX:-TieredCompilation -Xms48m -Xmx311m -XX:+PerfDisableSharedMem
+    -XX:MaxMetaspaceSize=95m -XX:+UseCompressedOops
+    -XX:+HeapDumpOnOutOfMemoryError -XX:+ExitOnOutOfMemoryError
+    -XX:HeapDumpPath=/opt/aws/rdscustomagent/log -jar
+    /opt/aws/rdscustomagent/RDSCustomAgent-1.0-SNAPSHOT-all.jar
+
+
+Owner: root
+Command: /usr/bin/amazon-ssm-agent
+
+
+Owner: root
+Command: /usr/bin/ssm-agent-worker
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Agent processes are used by Oracle Enterprise Manager to monitor and manage the database. These processes should run with a user ID separate from the database and listener processes. </td><td></td></tr>
+</table>
+<h3> Listener Processes </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> OS.LISTEN </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev0" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Pass </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Found 1 Listener process. Listener process owners do not overlap with Agent process owners. No listener process is owned by root. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+Owner: rdsdb
+Command: /rdsdbbin/oracle/bin/tnslsnr L_DB01_001 -inherit
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> Listener processes accept incoming network connections and connect them to the appropriate database server process. These processes should run with a user ID separate from the database and agent processes. These processes should be administered only through local OS authentication. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-75931r1 </td><td></td></tr>
+</table>
+<h3> File Permissions in ORACLE_HOME </h3>
+<table class="finding" cellpadding="4" border="0" role="presentation">
+<tr class="ruleid"><td></td>
+<td> OS.FILES </td>
+<td colspan="2">
+<span class="reftag"> STIG </span>
+</td>
+</tr><tr>
+<td class="sev4" colspan="4"></td>
+</tr>
+<tr><td></td>
+<td class="finding_head">Status</td> <td class="finding_cell"> Medium Risk </td><td></td></tr>
+<tr><td></td><td class="finding_head">Summary</td>
+<td class="finding_cell"> Examined 603 files. Found 1 error. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Details</td>
+<td class="finding_cell"><pre>
+ORACLE_HOME: /rdsdbbin/oracle
+ORACLE_HOME owner: rdsdb
+Directories: 5 (0 permission errors)
+Executables in $ORACLE_HOME/bin: 228 (0 permission errors)
+Configuration files in $TNS_ADMIN: 2 (0 permission errors)
+Data files in $ORACLE_HOME/dbs: 9 (0 permission errors)
+Libraries in $ORACLE_HOME/lib: 359 (1 permission errors)
+
+Files with permission errors:
+lib/libedtn19.a (rw-rw-r-- should be rw-r--r--)
+
+</pre></td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">Remarks</td>
+<td class="finding_cell"> The ORACLE_HOME directory and its subdirectories contain files that are critical to the correct operation of the database, including executable programs, libraries, data files and configuration files. Operating system file permissions must not allow these files to be modified by users other than the ORACLE_HOME owner and must not allow other users to directly read the contents of Oracle data files. </td><td></td></tr>
+<tr><td></td>
+<td class="finding_head">References</td>
+<td class="finding_cell"> Oracle Database 12c STIG  v1 r10: Rule SV-76001r1, SV-76277r1, SV-76359r1, SV-76365r1 </td><td></td></tr>
+</table>
+<hr>
+<p class="footnote">
+This report provides information and recommendations that may be helpful in securing your Oracle database system. These recommendations reflect best practices for database security and should be part of any strategy for Data Protection by Design and by Default. These practices may help in addressing Articles 25 and 32 of the EU General Data Protection Regulation as well as other data privacy regulations. Technical controls alone are not sufficient for compliance. Passing all findings does not guarantee compliance.
+</p>
+<p class="footnote">
+Oracle Database Vault, Oracle Advanced Security, Oracle Label Security, Oracle Data Masking and Subsetting Pack are database licensed options. Oracle Key Vault and Oracle Audit Vault and Database Firewall require separate licensing as well.
+</p>
+<p class="footnote">
+The report provides a view on the current status. The results shown are provided for informational purposes only and should not be used as a substitute for a thorough analysis or interpreted to contain any legal or regulatory advice or guidance.
+</p>
+<p class="footnote">
+You are solely responsible for your system, and the data and information gathered during the production of this report. You are also solely responsible for the execution of software to produce this report, and for the effect and results of the execution of any mitigating actions identified herein.
+</p>
+<p class="footnote">
+Oracle provides this analysis on an "as is" basis without warranty of any kind and Oracle hereby disclaims all warranties and conditions whether express, implied or statutory.
+</p>
+</body></html>
